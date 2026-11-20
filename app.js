@@ -1,6 +1,6 @@
 // =========================================================================
 // MINI-DATABASE SIMULASI ZAKARA (LOCALSTORAGE ENGINE - PERSISTEN PER DEVICE)
-// Sinkronisasi 2 Arah (Program <-> Akad Syariah) + Validasi Nisab Seragam
+// Mendukung nominal acak bebas (step="1"), sinkronisasi 2 arah, & validasi Nisab
 // =========================================================================
 
 const ZAKARA_DB_KEY = 'zakara_mini_db_v2';
@@ -77,6 +77,17 @@ function formatPct(part, total) {
     return ((part / total) * 100).toFixed(2).replace('.', ',') + '%';
 }
 
+// Bebaskan semua input nominal agar menerima angka acak berapapun (tanpa batasan kelipatan step)
+function unlockFlexibleNumericInputs() {
+    ['modal-amount-input', 'input-harta', 'dist-amount-input'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.setAttribute('step', '1');
+            el.setAttribute('min', '1');
+        }
+    });
+}
+
 // 1. Toggle Mobile Drawer
 function toggleMobileNav() {
     const drawer = document.getElementById('mobile-nav-drawer');
@@ -92,6 +103,9 @@ function initZakatCalculator() {
     const statusNisab = document.getElementById('status-nisab');
     const btnTunaikan = document.getElementById('btn-tunaikan-hitung');
     if (!inputHarta) return;
+
+    inputHarta.setAttribute('step', '1');
+    inputHarta.setAttribute('min', '0');
 
     function calculateZakat() {
         const val = parseFloat(inputHarta.value) || 0;
@@ -167,7 +181,6 @@ function syncProgramFromAkadChange() {
     const zakatEligible = isEligibleForZakat(nominal);
 
     if (modalContext.isCampaignFixed) {
-        // Pada kartu kampanye: jika user memilih Zakat Maal di bawah, label program atas ikut menyesuaikan ke Zakat Maal
         if (chosenAkad === 'Zakat Maal' && zakatEligible) {
             progEl.value = `Penyaluran Zakat Maal (8 Asnaf) — ${modalContext.originalCampaignName}`;
         } else {
@@ -176,7 +189,6 @@ function syncProgramFromAkadChange() {
         return;
     }
 
-    // Pada dropdown Salurkan / Kalkulator: sinkronkan kolom Program atas mengikuti Akad bawah
     if (chosenAkad === 'Zakat Maal' && zakatEligible) {
         progEl.value = 'Penyaluran Zakat Maal (8 Asnaf)';
         applyDonationRules({ autoSwitchToZakat: false, triggerPopup: false });
@@ -202,7 +214,6 @@ function applyDonationRules({ autoSwitchToZakat = false, triggerPopup = false } 
     const nominal = parseFloat(amtInput.value) || 0;
     const zakatEligible = isEligibleForZakat(nominal);
 
-    // 1. Atur opsi Program Zakat Maal di dropdown jika bukan kampanye terkunci
     if (progEl.tagName === 'SELECT') {
         const zakatProgOpt = Array.from(progEl.options).find(o => o.value === 'Penyaluran Zakat Maal (8 Asnaf)');
         if (zakatProgOpt) {
@@ -218,13 +229,11 @@ function applyDonationRules({ autoSwitchToZakat = false, triggerPopup = false } 
             progEl.value = '';
         }
     } else if (modalContext.isCampaignFixed) {
-        // Jika kampanye terkunci dan nominal turun di bawah nisab, kembalikan nama program ke kampanye asal
         if (!zakatEligible) {
             progEl.value = modalContext.originalCampaignName;
         }
     }
 
-    // 2. Pop-up notifikasi rapi saat nominal/harta mencapai batas Nisab
     if (zakatEligible) {
         if (triggerPopup && !lastNisabToastShown) {
             lastNisabToastShown = true;
@@ -234,7 +243,6 @@ function applyDonationRules({ autoSwitchToZakat = false, triggerPopup = false } 
         lastNisabToastShown = false;
     }
 
-    // 3. Tentukan opsi Akad Syariah yang aktif / diabu-abukan berdasarkan Program yang dipilih & Nisab
     const selectedProg = modalContext.isCampaignFixed ? modalContext.originalCampaignName : progEl.value;
     const optPlaceholder = Array.from(akadSelect.options).find(o => o.value === '');
     const optZakat = Array.from(akadSelect.options).find(o => o.value === 'Zakat Maal');
@@ -264,7 +272,6 @@ function applyDonationRules({ autoSwitchToZakat = false, triggerPopup = false } 
     const progType = getProgramType(selectedProg);
 
     if (progType === 'zakat') {
-        // Program Zakat Maal -> Infaq & Wakaf tetap tersedia agar user bisa ganti lewat dropdown bawah jika mau
         if (optZakat) {
             optZakat.disabled = !zakatEligible;
             optZakat.textContent = 'Zakat Maal (2.5% - 8 Asnaf)';
@@ -319,6 +326,10 @@ function setupDonationModalField(isCampaignFixed, fixedCampaignName) {
     const akadSelect = document.getElementById('modal-akad-select');
     if (!progEl || !amtInput || !akadSelect) return;
 
+    // Izinkan angka nominal acak berapapun (tidak dipaksa kelipatan 10.000)
+    amtInput.setAttribute('step', '1');
+    amtInput.setAttribute('min', '1');
+
     akadSelect.required = true;
     akadSelect.innerHTML = `
         <option value="" disabled selected>-- Pilih Jenis Akad Syariahmu --</option>
@@ -327,7 +338,6 @@ function setupDonationModalField(isCampaignFixed, fixedCampaignName) {
         <option value="Wakaf Sarana">Wakaf Sarana (Aset Berkelanjutan)</option>
     `;
 
-    // Listener perubahan Akad Syariah (bawah) -> menyinkronkan Program Tujuan (atas)
     akadSelect.onchange = () => {
         syncProgramFromAkadChange();
     };
@@ -441,7 +451,12 @@ function submitDonationModal(e) {
         return;
     }
 
-    const amt = parseInt(document.getElementById('modal-amount-input').value, 10) || 100000;
+    const amt = Math.round(parseFloat(document.getElementById('modal-amount-input').value)) || 0;
+    if (amt <= 0) {
+        showToast('Masukkan nominal donasi lebih dari Rp 0!');
+        return;
+    }
+
     const donorName = document.getElementById('modal-donor-name').value.trim() || 'Hamba Allah';
 
     const db = getZakaraDB();
@@ -455,7 +470,6 @@ function submitDonationModal(e) {
         db.akads[akad].sisa += amt;
     }
 
-    // Jika berasal dari kampanye spesifik (termasuk saat disalurkan via akad Zakat Maal), update progress kampanye asalnya
     const targetCampaignKey = modalContext.isCampaignFixed ? modalContext.originalCampaignName : program;
     if (db.campaigns[targetCampaignKey]) {
         db.campaigns[targetCampaignKey].terkumpul += amt;
@@ -534,7 +548,7 @@ function injectDistributionControls() {
                 </div>
                 <div>
                     <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Nominal Disalurkan (IDR)</label>
-                    <input id="dist-amount-input" type="number" min="10000" step="10000" required value="500000" class="w-full bg-surface-container-lowest border-2 border-black rounded-lg px-space-sm py-2 font-title-lg text-title-lg"/>
+                    <input id="dist-amount-input" type="number" min="1" step="1" required value="500000" class="w-full bg-surface-container-lowest border-2 border-black rounded-lg px-space-sm py-2 font-title-lg text-title-lg"/>
                 </div>
                 <button type="submit" class="w-full bg-secondary-container text-black font-title-lg text-title-lg uppercase border-2 border-black rounded-xl py-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
                     Eksekusi Penyaluran &amp; Update Neraca
@@ -554,7 +568,12 @@ function submitDistributeModal(e) {
     e.preventDefault();
     const akad = document.getElementById('dist-akad-select').value;
     const tujuan = document.getElementById('dist-target-select').value;
-    const amt = parseInt(document.getElementById('dist-amount-input').value, 10) || 100000;
+    const amt = Math.round(parseFloat(document.getElementById('dist-amount-input').value)) || 0;
+
+    if (amt <= 0) {
+        showToast('Masukkan nominal penyaluran lebih dari Rp 0!');
+        return;
+    }
 
     const db = getZakaraDB();
     if (amt > db.baseSisaDana) {
@@ -760,6 +779,7 @@ function showToast(message) {
 
 // Jalankan sinkronisasi otomatis saat halaman dimuat
 document.addEventListener('DOMContentLoaded', () => {
+    unlockFlexibleNumericInputs();
     initZakatCalculator();
     injectDistributionControls();
     syncAllPagesWithDB();
