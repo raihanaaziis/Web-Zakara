@@ -1,11 +1,11 @@
 // =========================================================================
 // MINI-DATABASE SIMULASI ZAKARA (LOCALSTORAGE ENGINE - PERSISTEN PER DEVICE)
-// Responsive Layout Fix + Sync Logo Navbar dengan Favicon + Nominal Bebas
+// Mobile Navbar Flow Fix (Anti-Tenggelam 100%) + Logo Favicon + Nominal Bebas
 // =========================================================================
 
 // Anti-Cache Otomatis: Memaksa browser HP selalu mengambil versi terbaru
 (function enforceFreshVersion() {
-    const CURRENT_VER = '2026.11.21.v6';
+    const CURRENT_VER = '2026.11.21.v7';
     const url = new URL(window.location.href);
     if (url.searchParams.get('v') !== CURRENT_VER) {
         url.searchParams.set('v', CURRENT_VER);
@@ -83,10 +83,27 @@ function applyResponsiveFixesAndFaviconLogo() {
             table {
                 width: 100%;
             }
-            @media (max-width: 640px) {
-                header nav, nav.fixed, header.fixed, header.sticky {
+            /* KHUSUS LAYAR HP: Jadikan header/navbar mengalir normal di atas halaman
+               sehingga konten paling atas TIDAK PERNAH tenggelam di balik navbar */
+            @media (max-width: 768px) {
+                header, nav, header.fixed, nav.fixed, header.sticky, nav.sticky {
+                    position: relative !important;
+                    top: auto !important;
+                    left: auto !important;
+                    right: auto !important;
+                    width: 100% !important;
                     padding-left: 0.75rem !important;
                     padding-right: 0.75rem !important;
+                }
+                #mobile-nav-drawer {
+                    position: relative !important;
+                    top: auto !important;
+                    width: 100% !important;
+                    max-height: none !important;
+                }
+                main {
+                    padding-top: 1.25rem !important;
+                    margin-top: 0 !important;
                 }
                 #toast-notification {
                     left: 0.75rem !important;
@@ -99,79 +116,11 @@ function applyResponsiveFixesAndFaviconLogo() {
         document.head.appendChild(style);
     }
 
-    // Cari navbar yang benar-benar terlihat dan berada di bagian atas layar
-    function findTopNavbar() {
-        const candidates = Array.from(document.querySelectorAll('header, nav, [role="navigation"]'));
-        // Prioritaskan elemen yang memiliki posisi fixed atau sticky dengan tinggi > 0
-        for (const el of candidates) {
-            const st = window.getComputedStyle(el);
-            const rect = el.getBoundingClientRect();
-            if ((st.position === 'fixed' || st.position === 'sticky') && rect.height > 20 && rect.top <= 20) {
-                return el;
-            }
-        }
-        // Fallback: ambil header/nav pertama yang tingginya > 20px
-        return candidates.find(el => el.getBoundingClientRect().height > 20) || candidates[0] || null;
-    }
-
-    const navBar = findTopNavbar();
-
-    function syncTopOffset() {
-        const activeNav = findTopNavbar() || navBar;
-        if (!activeNav) return;
-
-        const navRect = activeNav.getBoundingClientRect();
-        // Minimal anggap tinggi navbar 76px jika belum ter-render penuh
-        const navHeight = Math.max(76, Math.ceil(navRect.height));
-        const navStyle = window.getComputedStyle(activeNav);
-
-        document.documentElement.style.scrollPaddingTop = (navHeight + 24) + 'px';
-
-        // Cari elemen konten utama pertama di dalam halaman
-        const mainEl = document.querySelector('main');
-        const firstSection = mainEl ? (mainEl.firstElementChild || mainEl) : null;
-
-        if (navStyle.position === 'fixed') {
-            // Dorong seluruh body ke bawah seukuran tinggi navbar + ruang napas 24px
-            // Cara ini menjamin konten paling atas TIDAK PERNAH ketutup saat di-scroll mentok ke atas di HP!
-            document.body.style.paddingTop = (navHeight + 24) + 'px';
-
-            // Hapus spacer lama jika ada agar tidak ganda
-            const oldSpacer = document.getElementById('zakara-nav-spacer');
-            if (oldSpacer) oldSpacer.remove();
-
-            // Jika elemen pertama punya padding-top bawaan besar (misal pt-28), rapikan secukupnya
-            if (mainEl) mainEl.style.paddingTop = '0px';
-            if (firstSection && firstSection !== mainEl) {
-                firstSection.style.paddingTop = '0px';
-            }
-        } else if (navStyle.position === 'sticky') {
-            document.body.style.paddingTop = '0px';
-            if (mainEl) {
-                const curPt = parseFloat(window.getComputedStyle(mainEl).paddingTop) || 0;
-                if (curPt < 24) mainEl.style.paddingTop = '24px';
-            }
-        }
-
-        // Sesuaikan posisi mobile drawer tepat di bawah navbar
-        const mobileDrawer = document.getElementById('mobile-nav-drawer');
-        if (mobileDrawer && (navStyle.position === 'fixed' || navStyle.position === 'sticky')) {
-            mobileDrawer.style.top = navHeight + 'px';
-            mobileDrawer.style.maxHeight = `calc(100dvh - ${navHeight}px)`;
-            mobileDrawer.style.overflowY = 'auto';
-        }
-    }
-
-    syncTopOffset();
-    requestAnimationFrame(syncTopOffset);
-    setTimeout(syncTopOffset, 150);
-    window.addEventListener('load', syncTopOffset);
-    window.addEventListener('resize', syncTopOffset);
-    if (navBar && typeof ResizeObserver !== 'undefined') {
-        new ResizeObserver(syncTopOffset).observe(navBar);
-    }
+    // Pastikan tidak ada paddingTop liar di body
+    document.body.style.paddingTop = '0px';
 
     // Sinkronkan logo pada Navbar agar sama persis dengan Favicon halaman
+    const navBar = document.querySelector('header, nav');
     const faviconLink = document.querySelector('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]');
     const faviconHref = faviconLink ? faviconLink.getAttribute('href') : '';
 
