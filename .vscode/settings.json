@@ -1,0 +1,7 @@
+{
+    "liveshare.allowGuestDebugControl": true,
+    "liveshare.allowGuestTaskControl": true,
+    "liveshare.alwaysFollowHost": true,
+    "liveshare.diagnosticLogging": true,
+    "liveshare.guestApprovalRequired": false
+}

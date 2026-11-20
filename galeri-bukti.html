@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="icon" type="image/jpeg" href="asset/logo.jpg"/>
+    <title>Galeri Bukti & Mustahik — Zakara</title>
+    <!-- Google Fonts: Space Grotesk & Plus Jakarta Sans + Material Symbols -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400..700,0..1,-50..200" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="config.js"></script>
+    <style>
+        @layer base {
+            html, body {
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+            }
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 28s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+        /* Active Nav Tab Styling (Neo-Brutalism) */
+        .nav-active {
+            background-color: #ffd12e !important;
+            color: #000000 !important;
+            border: 2px solid #000000 !important;
+            box-shadow: 3px 3px 0px #000000 !important;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- ===================================================================== -->
+    <!-- STICKY TOP: W6 BANNER SIMULASI + NEO-BRUTALIST NAVIGATION (7 HALAMAN) -->
+    <!-- ===================================================================== -->
+    <div class="fixed top-0 left-0 w-full z-50">
+        <!-- Top Simulation Academic Disclaimer Banner (Ketentuan Wajib W2) -->
+        <div class="w-full bg-primary-container border-b-2 border-black py-1.5 px-4 text-center">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-2">
+                <span class="px-2 py-0.5 bg-black text-primary-container font-label-sm text-label-sm rounded-sm uppercase tracking-wider">SIMULASI – TUGAS KULIAH</span>
+                <p class="font-body-sm text-xs md:text-sm font-semibold text-black">
+                    Situs ini merupakan proyek akademik berbasis cloud sinkron. Seluruh data saldo &amp; transaksi terakumulasi otomatis dari input pengguna.
+                </p>
+                <!-- <span id="cloud-sync-badge" class="px-2 py-0.5 bg-black text-primary-container font-label-sm text-[11px] rounded-sm uppercase tracking-wider">Menghubungkan Cloud...</span> -->
+            </div>
+        </div>
+
+        <!-- Header Utama -->
+        <header class="bg-surface-container-lowest border-b-2 border-black">
+            <div class="h-20 w-full px-margin-mobile md:px-margin flex items-center justify-between gap-4">
+                <!-- Logo SVG Neo-Brutalist + Nama Lembaga -->
+                <a href="index.html" class="flex items-center gap-space-sm text-left focus:outline-none group">
+                    <div class="w-10 h-10 rounded-xl bg-primary-container border-2 border-black shadow-[3px_3px_0px_#000000] flex items-center justify-center group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[2px_2px_0px_#000000] transition-all">
+                        <span class="material-symbols-outlined text-black font-bold text-2xl">volunteer_activism</span>
+                    </div>
+                    <div>
+                        <span class="font-headline-sm text-headline-sm font-bold tracking-tight text-black uppercase block leading-none">Zakara</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase block mt-0.5">Kebaikan &amp; yang Terus Mengalir</span>
+                    </div>
+                </a>
+
+                <!-- Navigasi Desktop 7 Halaman Wajib (W2) -->
+                <nav class="hidden xl:flex items-center gap-1.5" id="desktop-nav">
+                    <a href="index.html" data-nav="beranda" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Beranda
+                    </a>
+                    <a href="profil.html" data-nav="profil" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Profil Kepengurusan
+                    </a>
+                    <a href="program.html" data-nav="program" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Program
+                    </a>
+                    <a href="donasi.html" data-nav="donasi" class="nav-link px-3 py-1.5 rounded-lg border-2 border-black font-label-md text-label-md bg-secondary-container text-black shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] transition-all">
+                        Donasi &amp; Kampanye
+                    </a>
+                    <a href="laporan.html" data-nav="laporan" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Laporan
+                    </a>
+                    <a href="galeri-bukti.html" data-nav="galeri-bukti" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all nav-active">
+                        Galeri Bukti
+                    </a>
+                    <a href="kontak.html" data-nav="kontak" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Kontak
+                    </a>
+                </nav>
+
+                <!-- Tombol Aksi Kanan & Hamburger Mobile -->
+                <div class="flex items-center gap-space-sm">
+                    <button type="button" onclick="openDonationModal('Zakat Maal / Infaq Umum')" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-secondary-container text-black font-label-md text-label-md uppercase border-2 border-black shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all">
+                        <span class="material-symbols-outlined text-[18px] font-bold">bolt</span>
+                        <span>Salurkan</span>
+                    </button>
+                    <button type="button" onclick="toggleMobileNav()" aria-label="Buka Menu Navigasi" class="xl:hidden p-2 rounded-lg border-2 border-black bg-primary-container shadow-[3px_3px_0px_#000000] text-black active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+                        <span class="material-symbols-outlined block font-bold" id="mobile-menu-icon">menu</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Dropdown Menu (7 Halaman) -->
+            <div id="mobile-nav-drawer" class="hidden xl:hidden bg-surface-container-lowest border-t-2 border-black px-margin-mobile py-4 space-y-2 shadow-[0_8px_0px_#000000]">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <a href="index.html" data-nav="beranda" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black font-label-md text-label-md">Beranda</a>
+                    <a href="profil.html" data-nav="profil" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md">Profil Kepengurusan</a>
+                    <a href="program.html" data-nav="program" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md">Program</a>
+                    <a href="donasi.html" data-nav="donasi" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-secondary-container font-label-md text-label-md">Donasi &amp; Kampanye</a>
+                    <a href="laporan.html" data-nav="laporan" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md">Laporan &amp; Neraca</a>
+                    <a href="galeri-bukti.html" data-nav="galeri-bukti" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md nav-active">Galeri Bukti</a>
+                    <a href="kontak.html" data-nav="kontak" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md sm:col-span-2">Kontak &amp; Verifikasi</a>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MAIN CONTENT WRAPPER                                                  -->
+    <!-- ===================================================================== -->
+    <main class="w-full pt-[7.5rem] bg-surface min-h-[calc(100vh-14rem)]">
+        <div id="page-galeri-bukti" class="page-view flex flex-col w-full">
+            <div class="w-full px-margin-mobile md:px-margin pt-space-md pb-space-xl flex flex-col gap-space-xl">
+                <!-- Hero Header -->
+                <section class="w-full bg-surface-container-lowest border-2 border-black rounded-xl p-space-md md:p-space-xl shadow-[5px_5px_0px_#000000]">
+                    <div class="flex flex-wrap items-center gap-space-xs mb-space-sm">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary-fixed border-2 border-black rounded-full font-label-sm text-label-sm text-black shadow-[2px_2px_0px_#000000] uppercase">
+                            <span class="material-symbols-outlined text-sm font-bold">verified_user</span>
+                            • BUKTI PENYALURAN &amp; PROFIL ASNAF
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-tertiary-container border-2 border-black rounded-full font-label-sm text-label-sm text-black shadow-[2px_2px_0px_#000000] uppercase">
+                            NIK &amp; ALAMAT DISAMARKAN DEMI ETIKA PRIVASI
+                        </span>
+                    </div>
+                    <h1 class="font-headline-lg text-headline-lg text-black uppercase tracking-tight mb-space-xs">
+                        GALERI BUKTI &amp; PROFIL PENERIMA MANFAAT
+                    </h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-3xl leading-relaxed">
+                        Dokumentasi penyaluran Filantropi Uang, Filantropi Tenaga, dan Filantropi Ilmu dilengkapi BAST &amp; profil mustahik terverifikasi Had Kifayah tanpa mengeksploitasi data pribadi sensitif.
+                    </p>
+                </section>
+
+                <!-- SECTION 1: Profil Mustahik Terverifikasi (Poin 5 - Tanpa Data Sensitif) -->
+                <section class="flex flex-col gap-space-md">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-primary-container border-2 border-black font-label-sm text-label-sm text-black uppercase mb-1 shadow-[2px_2px_0px_#000000]">
+                            • Verifikasi Penerima Manfaat (8 Asnaf)
+                        </div>
+                        <h2 class="font-headline-md text-headline-md text-black uppercase tracking-tight">
+                            PROFIL MUSTAHIK &amp; SKOR KELAYAKAN HAD KIFAYAH
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+                        <!-- Mustahik 1 -->
+                        <article class="bg-surface-container-lowest border-2 border-black rounded-xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                            <div class="flex flex-col gap-space-sm">
+                                <div class="flex items-center justify-between border-b-2 border-black pb-space-xs">
+                                    <span class="px-2 py-0.5 bg-secondary-fixed text-black border border-black rounded-full font-label-sm text-label-sm">TERVERIFIKASI</span>
+                                    <span class="font-label-sm text-label-sm text-black bg-surface-container px-2 py-0.5 border border-black rounded font-bold">SKOR: 94/100</span>
+                                </div>
+                                <div>
+                                    <span class="font-label-sm text-label-sm uppercase text-secondary font-bold">Asnaf Miskin • Modal Usaha</span>
+                                    <h3 class="font-title-lg text-title-lg text-black">Ibu Warsiti (48 thn)</h3>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant">Kec. Pandeglang, Banten • NIK: 3601************</p>
+                                </div>
+                                <div class="bg-surface-container-low border border-black p-space-xs rounded-lg">
+                                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Bantuan Diterima:</span>
+                                    <span class="font-title-lg text-title-lg text-black font-bold">Rp 3.500.000 (Etalase &amp; Modal)</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Mustahik 2 -->
+                        <article class="bg-surface-container-lowest border-2 border-black rounded-xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                            <div class="flex flex-col gap-space-sm">
+                                <div class="flex items-center justify-between border-b-2 border-black pb-space-xs">
+                                    <span class="px-2 py-0.5 bg-secondary-fixed text-black border border-black rounded-full font-label-sm text-label-sm">TERVERIFIKASI</span>
+                                    <span class="font-label-sm text-label-sm text-black bg-surface-container px-2 py-0.5 border border-black rounded font-bold">SKOR: 98/100</span>
+                                </div>
+                                <div>
+                                    <span class="font-label-sm text-label-sm uppercase text-secondary font-bold">Asnaf Fakir • Santunan Lansia</span>
+                                    <h3 class="font-title-lg text-title-lg text-black">Pak S. (71 thn)</h3>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant">Kab. Lombok Timur, NTB • NIK: 5203************</p>
+                                </div>
+                                <div class="bg-surface-container-low border border-black p-space-xs rounded-lg">
+                                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Bantuan Diterima:</span>
+                                    <span class="font-title-lg text-title-lg text-black font-bold">Rp 1.200.000 / bln (Sembako)</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Mustahik 3 -->
+                        <article class="bg-surface-container-lowest border-2 border-black rounded-xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                            <div class="flex flex-col gap-space-sm">
+                                <div class="flex items-center justify-between border-b-2 border-black pb-space-xs">
+                                    <span class="px-2 py-0.5 bg-secondary-fixed text-black border border-black rounded-full font-label-sm text-label-sm">TERVERIFIKASI</span>
+                                    <span class="font-label-sm text-label-sm text-black bg-surface-container px-2 py-0.5 border border-black rounded font-bold">SKOR: 89/100</span>
+                                </div>
+                                <div>
+                                    <span class="font-label-sm text-label-sm uppercase text-secondary font-bold">Asnaf Fisabilillah • Beasiswa</span>
+                                    <h3 class="font-title-lg text-title-lg text-black">Santri Rian (16 thn)</h3>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant">Sukabumi, Jawa Barat • NIK: 3202************</p>
+                                </div>
+                                <div class="bg-surface-container-low border border-black p-space-xs rounded-lg">
+                                    <span class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Bantuan Diterima:</span>
+                                    <span class="font-title-lg text-title-lg text-black font-bold">Rp 4.800.000 / smt (SPP Pondok)</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- SECTION 2: Folder Tab Galeri Bukti 3 Filantropi (Poin 7 & Bagian C) -->
+                <section class="flex flex-col gap-space-md pt-space-md">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-tertiary-fixed text-black border-2 border-black font-label-sm text-label-sm uppercase mb-1 shadow-[2px_2px_0px_#000000]">
+                            • Dokumentasi 3 Bentuk Filantropi
+                        </div>
+                        <h2 class="font-headline-md text-headline-md text-black uppercase tracking-tight">
+                            ARSIP BUKTI: UANG, TENAGA, DAN ILMU
+                        </h2>
+                    </div>
+
+                    <div class="w-full flex flex-col">
+                        <!-- Folder Tabs -->
+                        <div class="flex flex-wrap items-end gap-1 -mb-[2px] z-20">
+                            <button type="button" id="tab-btn-all" onclick="filterGallery('all')" class="gal-tab-btn px-space-md py-2.5 font-label-md text-label-md uppercase border-2 border-black rounded-t-lg bg-primary-container text-black shadow-[2px_-2px_0px_#000000]">
+                                Semua Bukti
+                            </button>
+                            <button type="button" id="tab-btn-uang" onclick="filterGallery('uang')" class="gal-tab-btn px-space-md py-2.5 font-label-md text-label-md uppercase border-2 border-black rounded-t-lg bg-surface-container text-on-surface-variant hover:text-black">
+                                Filantropi Uang 
+                            </button>
+                            <button type="button" id="tab-btn-tenaga" onclick="filterGallery('tenaga')" class="gal-tab-btn px-space-md py-2.5 font-label-md text-label-md uppercase border-2 border-black rounded-t-lg bg-surface-container text-on-surface-variant hover:text-black">
+                                Filantropi Tenaga 
+                            </button>
+                            <button type="button" id="tab-btn-ilmu" onclick="filterGallery('ilmu')" class="gal-tab-btn px-space-md py-2.5 font-label-md text-label-md uppercase border-2 border-black rounded-t-lg bg-surface-container text-on-surface-variant hover:text-black">
+                                Filantropi Ilmu
+                            </button>
+                        </div>
+
+                        <!-- Folder Desk Pad -->
+                        <div class="w-full border-2 border-black bg-surface-container-lowest rounded-b-xl rounded-tr-xl p-space-md md:p-space-lg shadow-[5px_5px_0px_#000000] z-10">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="gallery-grid">
+                                <!-- Bukti Uang 1 -->
+                                <div class="gallery-card bg-surface-container-lowest border-2 border-black rounded-xl overflow-hidden shadow-[4px_4px_0px_#000000] flex flex-col justify-between" data-cat="uang">
+                                    <div>
+                                        <div class="relative w-full h-44 border-b-2 border-black bg-surface-container">
+                                            <img class="w-full h-full object-cover" alt="Serah Terima Modal Usaha" src="asset/sembako.jpeg"/>
+                                            <span class="absolute top-2 left-2 px-2 py-0.5 bg-primary-container text-black border border-black font-label-sm text-label-sm uppercase font-bold rounded">FILANTROPI UANG</span>
+                                            <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black text-white font-label-sm text-label-sm rounded">BAST #2025/U-091</span>
+                                        </div>
+                                        <div class="p-space-md">
+                                            <p class="font-label-sm text-label-sm text-on-surface-variant">14 Feb 2025 • Pandeglang, Banten</p>
+                                            <h3 class="font-title-lg text-title-lg text-black mt-1">Penyerahan Modal Usaha &amp; Etalase Warung</h3>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Dilengkapi kuitansi bermeterai, BAST bertanda tangan saksi RT, dan izin publikasi mustahik.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-space-md pt-0">
+                                        <div class="p-space-xs bg-surface-container-low border border-black rounded flex justify-between">
+                                            <span class="font-label-sm text-label-sm font-bold">Nominal:</span>
+                                            <span class="font-label-md text-label-md text-secondary font-bold">Rp 10.500.000</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bukti Uang 2 -->
+                                <div class="gallery-card bg-surface-container-lowest border-2 border-black rounded-xl overflow-hidden shadow-[4px_4px_0px_#000000] flex flex-col justify-between" data-cat="uang">
+                                    <div>
+                                        <div class="relative w-full h-44 border-b-2 border-black bg-surface-container">
+                                            <img class="w-full h-full object-cover" alt="Logistik Sembako Lansia" src="asset/bansos.jpeg"/>
+                                            <span class="absolute top-2 left-2 px-2 py-0.5 bg-primary-container text-black border border-black font-label-sm text-label-sm uppercase font-bold rounded">FILANTROPI UANG</span>
+                                            <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black text-white font-label-sm text-label-sm rounded">BAST #2025/U-072</span>
+                                        </div>
+                                        <div class="p-space-md">
+                                            <p class="font-label-sm text-label-sm text-on-surface-variant">30 Jan 2025 • Lombok Timur, NTB</p>
+                                            <h3 class="font-title-lg text-title-lg text-black mt-1">Pengadaan &amp; Penyaluran Sembako Lansia</h3>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Nota pembelian beras &amp; minyak goreng terlampir beserta daftar tanda terima 45 lansia dhuafa.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-space-md pt-0">
+                                        <div class="p-space-xs bg-surface-container-low border border-black rounded flex justify-between">
+                                            <span class="font-label-sm text-label-sm font-bold">Nominal:</span>
+                                            <span class="font-label-md text-label-md text-secondary font-bold">Rp 18.200.000</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bukti Uang 3 -->
+                                <div class="gallery-card bg-surface-container-lowest border-2 border-black rounded-xl overflow-hidden shadow-[4px_4px_0px_#000000] flex flex-col justify-between" data-cat="uang">
+                                    <div>
+                                        <div class="relative w-full h-44 border-b-2 border-black bg-surface-container">
+                                            <img class="w-full h-full object-cover" alt="Logistik Sembako Lansia" src="asset/sahur.jpeg"/>
+                                            <span class="absolute top-2 left-2 px-2 py-0.5 bg-primary-container text-black border border-black font-label-sm text-label-sm uppercase font-bold rounded">FILANTROPI UANG</span>
+                                            <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black text-white font-label-sm text-label-sm rounded">BAST #2026/SOTR-008</span>
+                                        </div>
+                                        <div class="p-space-md">
+                                            <p class="font-label-sm text-label-sm text-on-surface-variant">8 Mar 2026 • Umbulharjo, Yogyakarta</p>
+                                            <h3 class="font-title-lg text-title-lg text-black mt-1">Sahur On The Road Untuk Warga Yogja yang Membutuhkan</h3>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Melampirkan nota pengadaan paket sahur, kuitansi serah terima bertanda tangan penerima/mitra, serta surat keterangan mitra setempat di Umbulharjo dengan tetap menjaga privasi penerima</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-space-md pt-0">
+                                        <div class="p-space-xs bg-surface-container-low border border-black rounded flex justify-between">
+                                            <span class="font-label-sm text-label-sm font-bold">Nominal:</span>
+                                            <span class="font-label-md text-label-md text-secondary font-bold">Rp 6.000.000</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bukti Tenaga 1 -->
+                                <div class="gallery-card bg-surface-container-lowest border-2 border-black rounded-xl overflow-hidden shadow-[4px_4px_0px_#000000] flex flex-col justify-between" data-cat="tenaga">
+                                    <div>
+                                        <div class="relative w-full h-44 border-b-2 border-black bg-surface-container">
+                                            <img class="w-full h-full object-cover" alt="Dapur Umum Relawan" src="asset/dapur.jpeg"/>
+                                            <span class="absolute top-2 left-2 px-2 py-0.5 bg-secondary-fixed text-black border border-black font-label-sm text-label-sm uppercase font-bold rounded">FILANTROPI TENAGA</span>
+                                            <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black text-white font-label-sm text-label-sm rounded">ABSENSI #T-01</span>
+                                        </div>
+                                        <div class="p-space-md">
+                                            <p class="font-label-sm text-label-sm text-on-surface-variant">10 Feb 2025 • Posko Kemang, Jakarta</p>
+                                            <h3 class="font-title-lg text-title-lg text-black mt-1">Posko Dapur Umum &amp; 500 Porsi Sehat</h3>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Melampirkan daftar hadir bertanda tangan 24 relawan mahasiswa dan surat mitra RW setempat.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-space-md pt-0">
+                                        <div class="p-space-xs bg-surface-container-low border border-black rounded flex justify-between">
+                                            <span class="font-label-sm text-label-sm font-bold">Kontribusi:</span>
+                                            <span class="font-label-md text-label-md text-black font-bold">144 Jam Relawan</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bukti Tenaga 2 -->
+                                <div class="gallery-card bg-surface-container-lowest border-2 border-black rounded-xl overflow-hidden shadow-[4px_4px_0px_#000000] flex flex-col justify-between" data-cat="tenaga">
+                                    <div>
+                                        <div class="relative w-full h-44 border-b-2 border-black bg-surface-container">
+                                            <img class="w-full h-full object-cover" alt="Perbaikan Sanitasi Musholla" src="asset/masjid.jpeg"/>
+                                            <span class="absolute top-2 left-2 px-2 py-0.5 bg-secondary-fixed text-black border border-black font-label-sm text-label-sm uppercase font-bold rounded">FILANTROPI TENAGA</span>
+                                            <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black text-white font-label-sm text-label-sm rounded">ABSENSI #T-02</span>
+                                        </div>
+                                        <div class="p-space-md">
+                                            <p class="font-label-sm text-label-sm text-on-surface-variant">25 Jan 2025 • Pandeglang Hilir</p>
+                                            <h3 class="font-title-lg text-title-lg text-black mt-1">Gotong Royong Perbaikan Tempat Wudhu</h3>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Perbaikan saluran air bersih &amp; pengecatan musholla dengan surat keterangan Takmir Musholla.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-space-md pt-0">
+                                        <div class="p-space-xs bg-surface-container-low border border-black rounded flex justify-between">
+                                            <span class="font-label-sm text-label-sm font-bold">Kontribusi:</span>
+                                            <span class="font-label-md text-label-md text-black font-bold">68 Jam Relawan</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bukti Ilmu 1 -->
+                                <div class="gallery-card bg-surface-container-lowest border-2 border-black rounded-xl overflow-hidden shadow-[4px_4px_0px_#000000] flex flex-col justify-between" data-cat="ilmu">
+                                    <div>
+                                        <div class="relative w-full h-44 border-b-2 border-black bg-surface-container">
+                                            <img class="w-full h-full object-cover" alt="Kelas Pembukuan UMKM" src="asset/ngajar.jpeg"/>
+                                            <span class="absolute top-2 left-2 px-2 py-0.5 bg-tertiary-container text-black border border-black font-label-sm text-label-sm uppercase font-bold rounded">FILANTROPI ILMU</span>
+                                            <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black text-white font-label-sm text-label-sm rounded">MODUL #I-01</span>
+                                        </div>
+                                        <div class="p-space-md">
+                                            <p class="font-label-sm text-label-sm text-on-surface-variant">12 Feb 2025 • Balai Desa Sukamaju</p>
+                                            <h3 class="font-title-lg text-title-lg text-black mt-1">Pelatihan Pembukuan Kas &amp; Keuangan Syariah</h3>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Melampirkan 4 modul ajar, daftar hadir 45 pelaku UMKM binaan, serta hasil pre-test &amp; post-test.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-space-md pt-0">
+                                        <div class="p-space-xs bg-surface-container-low border border-black rounded flex justify-between">
+                                            <span class="font-label-sm text-label-sm font-bold">Hasil Belajar:</span>
+                                            <span class="font-label-md text-label-md text-tertiary font-bold">Skor 46 → 88</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bukti Ilmu 2 -->
+                                <div class="gallery-card bg-surface-container-lowest border-2 border-black rounded-xl overflow-hidden shadow-[4px_4px_0px_#000000] flex flex-col justify-between" data-cat="ilmu">
+                                    <div>
+                                        <div class="relative w-full h-44 border-b-2 border-black bg-surface-container">
+                                            <img class="w-full h-full object-cover" alt="Bimbingan Mengaji Santri" src="asset/ngaji.jpeg"/>
+                                            <span class="absolute top-2 left-2 px-2 py-0.5 bg-tertiary-container text-black border border-black font-label-sm text-label-sm uppercase font-bold rounded">FILANTROPI ILMU</span>
+                                            <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-black text-white font-label-sm text-label-sm rounded">MODUL #I-02</span>
+                                        </div>
+                                        <div class="p-space-md">
+                                            <p class="font-label-sm text-label-sm text-on-surface-variant">04 Feb 2025 • Asrama Santri Dhuafa</p>
+                                            <h3 class="font-title-lg text-title-lg text-black mt-1">Kelas Fiqih Muamalah &amp; Tahsin Al-Qur'an</h3>
+                                            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Bimbingan rutin oleh relawan prodi PAI dengan buku saku fiqih praktis &amp; surat mitra pondok.</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-space-md pt-0">
+                                        <div class="p-space-xs bg-surface-container-low border border-black rounded flex justify-between">
+                                            <span class="font-label-sm text-label-sm font-bold">Peserta Aktif:</span>
+                                            <span class="font-label-md text-label-md text-tertiary font-bold">60 Santri Binaan</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+<!-- ===================================================================== -->
+    <!-- MODAL DONASI SIMULASI INTERAKTIF (Pengganti alert, sinkron ke tabel)   -->
+    <!-- ===================================================================== -->
+    <div id="donation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs hidden p-margin-mobile">
+        <div class="bg-surface-container-lowest border-2 border-black rounded-xl p-space-lg max-w-lg w-full shadow-[8px_8px_0px_#000000] relative">
+            <div class="flex items-center justify-between pb-space-sm border-b-2 border-black mb-space-md">
+                <div class="flex items-center gap-space-xs">
+                    <span class="w-3 h-3 bg-secondary rounded-full border border-black"></span>
+                    <span class="font-label-md text-label-md uppercase tracking-wider text-black">Formulir Akad Donasi (Simulasi)</span>
+                </div>
+                <button type="button" onclick="closeDonationModal()" class="w-8 h-8 rounded-lg border-2 border-black bg-surface-container hover:bg-error-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[18px] font-bold">close</span>
+                </button>
+            </div>
+
+            <div class="bg-primary-fixed border-2 border-black p-space-xs rounded-lg mb-space-md flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-black text-sm font-bold">warning</span>
+                <span class="font-label-sm text-label-sm uppercase font-bold text-black">Simulasi Tugas Kuliah — Data tercatat langsung ke Rekap Donatur</span>
+            </div>
+
+            <form onsubmit="submitDonationModal(event)" class="space-y-space-sm">
+                <div>
+                    <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Program / Kampanye Pilihan</label>
+                    <input id="modal-program-name" readonly type="text" value="Pemberdayaan 50 Warung Barokah Dhuafa" class="w-full bg-surface-container border-2 border-black rounded-lg px-space-sm py-2 font-title-lg text-title-lg text-black"/>
+                </div>
+                <div>
+                    <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Jenis Akad Syariah</label>
+                    <select id="modal-akad-select" class="w-full bg-surface-container-lowest border-2 border-black rounded-lg px-space-sm py-2 font-body-md text-body-md">
+                        <option value="Zakat Maal">Zakat Maal (8 Asnaf)</option>
+                        <option value="Infaq Produktif">Infaq &amp; Sedekah Produktif</option>
+                        <option value="Wakaf Sarana">Wakaf Tunai / Sarana</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Nominal Donasi Simulasi (IDR)</label>
+                    <div class="flex items-center border-2 border-black rounded-lg bg-surface-container-lowest overflow-hidden shadow-[3px_3px_0px_#000000]">
+                        <span class="bg-primary-container font-headline-sm text-headline-sm px-space-sm py-2 border-r-2 border-black text-black font-bold">Rp</span>
+                        <input id="modal-amount-input" type="number" min="10000" step="10000" required value="250000" class="w-full px-space-sm py-2 font-title-lg text-title-lg focus:outline-none"/>
+                    </div>
+                </div>
+                <div>
+                    <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Nama Donatur (Boleh Samaran)</label>
+                    <input id="modal-donor-name" type="text" placeholder="Hamba Allah" value="Hamba Allah" class="w-full bg-surface-container-lowest border-2 border-black rounded-lg px-space-sm py-2 font-body-md text-body-md shadow-[2px_2px_0px_#000000]"/>
+                </div>
+                <div class="pt-space-xs">
+                    <button type="submit" class="w-full bg-primary-container text-black font-title-lg text-title-lg uppercase border-2 border-black rounded-xl py-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-space-xs">
+                        <span class="material-symbols-outlined font-bold">check_circle</span>
+                        <span>Konfirmasi Transaksi Simulasi</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Toast Notification (Menggantikan alert() di seluruh halaman) -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 hidden bg-black text-white border-2 border-primary-container px-4 py-3 rounded-xl shadow-[4px_4px_0px_#FFD12E] max-w-sm flex items-center gap-2.5">
+        <span class="material-symbols-outlined text-primary-container font-bold">info</span>
+        <span id="toast-text" class="font-body-sm text-body-sm"></span>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- FOOTER WAJIB (Ketentuan W7: Pernyataan Penggunaan AI & Link 7 Halaman) -->
+    <!-- ===================================================================== -->
+    <footer class="w-full bg-surface-container-lowest border-t-2 border-black mt-space-xl">
+        <div class="w-full px-margin-mobile md:px-margin py-space-xl">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-space-xl">
+                <!-- Kolom 1: Identitas -->
+                <div class="md:col-span-4 flex flex-col gap-space-sm">
+                    <div class="flex items-center gap-space-sm">
+                        <div class="w-8 h-8 rounded-lg bg-primary-container border-2 border-black flex items-center justify-center">
+                            <span class="material-symbols-outlined text-black font-bold text-lg">volunteer_activism</span>
+                        </div>
+                        <span class="font-headline-sm text-headline-sm font-bold text-black uppercase">Zakara</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Lembaga Pengelola Zakat, Infaq, Shadaqah, dan Wakaf dengan akuntabilitas digital, pemisahan akad syariah, dan pelaporan neraca berimbang.
+                    </p>
+                </div>
+
+                <!-- Kolom 2: Navigasi Cepat 7 Halaman -->
+                <div class="md:col-span-4 flex flex-col gap-space-xs">
+                    <h4 class="font-title-lg text-title-lg text-black uppercase mb-space-xs">7 Halaman Utama </h4>
+                    <div class="grid grid-cols-2 gap-1.5 font-body-sm text-body-sm">
+                        <a href="index.html" class="text-left hover:underline font-semibold">1. Beranda</a>
+                        <a href="profil.html" class="text-left hover:underline font-semibold">2. Profil Kepengurusan</a>
+                        <a href="program.html" class="text-left hover:underline font-semibold">3. Program</a>
+                        <a href="donasi.html" class="text-left hover:underline font-semibold">4. Donasi &amp; Kampanye</a>
+                        <a href="laporan.html" class="text-left hover:underline font-semibold">5. Laporan &amp; Neraca</a>
+                        <a href="galeri-bukti.html" class="text-left hover:underline font-semibold">6. Galeri Bukti</a>
+                        <a href="kontak.html" class="text-left hover:underline font-semibold">7. Kontak &amp; Verifikasi</a>
+                    </div>
+                </div>
+
+                <!-- Kolom 3: Ketentuan Wajib W7 (Pernyataan Penggunaan AI) -->
+                <div class="md:col-span-4 flex flex-col justify-start">
+                    <div class="bg-primary-fixed border-2 border-black p-space-md rounded-xl shadow-[3px_3px_0px_#000000]">
+                        <div class="flex items-center gap-space-xs mb-space-xs">
+                            <span class="material-symbols-outlined text-black font-bold text-base">smart_toy</span>
+                            <span class="font-label-sm text-label-sm uppercase text-black font-bold">Pernyataan Penggunaan AI </span>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-black leading-snug font-medium">
+                            Teks dan struktur kode HTML/Tailwind website ini dibantu menggunakan AI (<strong>Gemini &amp; Stitch UI</strong>). Seluruh konsep program 10 poin, perhitungan neraca syariah, dan verifikasi data dipahami dan disusun oleh mahasiswa untuk keperluan tugas kuliah.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t-2 border-black pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm">
+                <p class="font-label-md text-label-md text-on-surface-variant text-center md:text-left">
+                    © 2026–2027 Zakara • SIMULASI – TUGAS KULIAH
+                </p>
+                <div class="flex items-center gap-space-sm">
+                    <span class="font-label-sm text-label-sm uppercase bg-surface-container px-space-sm py-1 border border-black rounded">Hak Amil 8,20% (≤ 12,5%)</span>
+                    <span class="font-label-sm text-label-sm uppercase bg-secondary-container text-black px-space-sm py-1 border border-black rounded shadow-[1px_1px_0px_#000000]">Neraca Seimbang </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script src="app.js"></script>
+</body>
+</html>

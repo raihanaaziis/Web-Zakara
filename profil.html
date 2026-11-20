@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="icon" type="image/jpeg" href="asset/logo.jpg"/>
+    <title>Profil Pendiri & Kepengurusan — Zakara</title>
+    <!-- Google Fonts: Space Grotesk & Plus Jakarta Sans + Material Symbols -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400..700,0..1,-50..200" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="config.js"></script>
+    <style>
+        @layer base {
+            html, body {
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
+            }
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 28s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+        /* Active Nav Tab Styling (Neo-Brutalism) */
+        .nav-active {
+            background-color: #ffd12e !important;
+            color: #000000 !important;
+            border: 2px solid #000000 !important;
+            box-shadow: 3px 3px 0px #000000 !important;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- ===================================================================== -->
+    <!-- STICKY TOP: W6 BANNER SIMULASI + NEO-BRUTALIST NAVIGATION (7 HALAMAN) -->
+    <!-- ===================================================================== -->
+    <div class="fixed top-0 left-0 w-full z-50">
+        <!-- Top Simulation Academic Disclaimer Banner (Ketentuan Wajib W2) -->
+        <div class="w-full bg-primary-container border-b-2 border-black py-1.5 px-4 text-center">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-2">
+                <span class="px-2 py-0.5 bg-black text-primary-container font-label-sm text-label-sm rounded-sm uppercase tracking-wider">SIMULASI – TUGAS KULIAH</span>
+                <p class="font-body-sm text-xs md:text-sm font-semibold text-black">
+                    Situs ini merupakan proyek akademik berbasis cloud sinkron. Seluruh data saldo &amp; transaksi terakumulasi otomatis dari input pengguna.
+                </p>
+                <!-- <span id="cloud-sync-badge" class="px-2 py-0.5 bg-black text-primary-container font-label-sm text-[11px] rounded-sm uppercase tracking-wider">Menghubungkan Cloud...</span> -->
+            </div>
+        </div>
+
+        <!-- Header Utama -->
+        <header class="bg-surface-container-lowest border-b-2 border-black">
+            <div class="h-20 w-full px-margin-mobile md:px-margin flex items-center justify-between gap-4">
+                <!-- Logo SVG Neo-Brutalist + Nama Lembaga -->
+                <a href="index.html" class="flex items-center gap-space-sm text-left focus:outline-none group">
+                    <div class="w-10 h-10 rounded-xl bg-primary-container border-2 border-black shadow-[3px_3px_0px_#000000] flex items-center justify-center group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-[2px_2px_0px_#000000] transition-all">
+                        <span class="material-symbols-outlined text-black font-bold text-2xl">volunteer_activism</span>
+                    </div>
+                    <div>
+                        <span class="font-headline-sm text-headline-sm font-bold tracking-tight text-black uppercase block leading-none">Zakara</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase block mt-0.5">Kebaikan &amp; yang Terus Mengalir</span>
+                    </div>
+                </a>
+
+                <!-- Navigasi Desktop 7 Halaman Wajib (W2) -->
+                <nav class="hidden xl:flex items-center gap-1.5" id="desktop-nav">
+                    <a href="index.html" data-nav="beranda" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Beranda
+                    </a>
+                    <a href="profil.html" data-nav="profil" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all nav-active">
+                        Profil Kepengurusan
+                    </a>
+                    <a href="program.html" data-nav="program" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Program
+                    </a>
+                    <a href="donasi.html" data-nav="donasi" class="nav-link px-3 py-1.5 rounded-lg border-2 border-black font-label-md text-label-md bg-secondary-container text-black shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] transition-all">
+                        Donasi &amp; Kampanye
+                    </a>
+                    <a href="laporan.html" data-nav="laporan" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Laporan
+                    </a>
+                    <a href="galeri-bukti.html" data-nav="galeri-bukti" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Galeri Bukti
+                    </a>
+                    <a href="kontak.html" data-nav="kontak" class="nav-link px-3 py-1.5 rounded-lg border-2 border-transparent font-label-md text-label-md text-on-surface-variant hover:text-black hover:border-black hover:bg-surface-container transition-all">
+                        Kontak
+                    </a>
+                </nav>
+
+                <!-- Tombol Aksi Kanan & Hamburger Mobile -->
+                <div class="flex items-center gap-space-sm">
+                    <button type="button" onclick="openDonationModal('Zakat Maal / Infaq Umum')" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-secondary-container text-black font-label-md text-label-md uppercase border-2 border-black shadow-[3px_3px_0px_#000000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_#000000] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all">
+                        <span class="material-symbols-outlined text-[18px] font-bold">bolt</span>
+                        <span>Salurkan</span>
+                    </button>
+                    <button type="button" onclick="toggleMobileNav()" aria-label="Buka Menu Navigasi" class="xl:hidden p-2 rounded-lg border-2 border-black bg-primary-container shadow-[3px_3px_0px_#000000] text-black active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
+                        <span class="material-symbols-outlined block font-bold" id="mobile-menu-icon">menu</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Dropdown Menu (7 Halaman) -->
+            <div id="mobile-nav-drawer" class="hidden xl:hidden bg-surface-container-lowest border-t-2 border-black px-margin-mobile py-4 space-y-2 shadow-[0_8px_0px_#000000]">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <a href="index.html" data-nav="beranda" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black font-label-md text-label-md">Beranda</a>
+                    <a href="profil.html" data-nav="profil" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md nav-active">Profil Pendiri &amp; Kepengurusan</a>
+                    <a href="program.html" data-nav="program" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md">Program</a>
+                    <a href="donasi.html" data-nav="donasi" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-secondary-container font-label-md text-label-md">Donasi &amp; Kampanye</a>
+                    <a href="laporan.html" data-nav="laporan" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md">Laporan &amp; Neraca</a>
+                    <a href="galeri-bukti.html" data-nav="galeri-bukti" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md">Galeri Bukti</a>
+                    <a href="kontak.html" data-nav="kontak" class="nav-link text-left px-3.5 py-2.5 rounded-lg border-2 border-black bg-surface font-label-md text-label-md sm:col-span-2">Kontak &amp; Verifikasi</a>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MAIN CONTENT WRAPPER                                                  -->
+    <!-- ===================================================================== -->
+    <main class="w-full pt-[7.5rem] bg-surface min-h-[calc(100vh-14rem)]">
+        <div id="page-profil" class="page-view flex flex-col w-full">
+            <!-- Header Banner -->
+            <section class="w-full px-margin-mobile md:px-margin pt-space-md pb-space-lg">
+                <div class="bg-surface-container-lowest border-2 border-black rounded-xl p-space-md md:p-space-lg shadow-[4px_4px_0px_#000000] relative overflow-hidden">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-space-sm">
+                        <div class="flex flex-wrap items-center gap-space-xs">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-container border-2 border-black rounded-full font-label-sm text-label-sm text-black uppercase tracking-wider shadow-[2px_2px_0px_#000000]">
+                                <span class="material-symbols-outlined text-sm font-bold">account_tree</span>
+                                KETENTUAN WAJIB
+                            </span>
+                            <span class="inline-flex items-center px-2.5 py-1 bg-secondary-container border border-black rounded-full font-label-sm text-label-sm text-black">
+                                KODE UNIT: ZKR-ORG-2026
+                            </span>
+                        </div>
+                    </div>
+                    <h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-black uppercase tracking-tight max-w-4xl mb-space-xs">
+                        PROFIL LEMBAGA &amp; SUSUNAN PENGURUS
+                    </h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl leading-relaxed">
+                        Identitas pendiri mahasiswa pelaksana, korps relawan lintas prodi, serta dewan pengawas syariah &amp; audit keuangan internal.
+                    </p>
+                </div>
+            </section>
+
+            <!-- BAGIAN ATAS: Pendiri & Ketua Amil (Syarat W3: Foto Wajah Asli, Nama, NIM, Peran) -->
+            <section class="w-full px-margin-mobile md:px-margin pb-space-xl">
+                <div class="flex items-center">
+                    <div class="bg-primary-container border-t-2 border-x-2 border-black rounded-t-xl px-space-md py-2 flex items-center gap-2 shadow-[2px_-2px_0px_#000000] z-10 translate-y-[2px]">
+                        <span class="material-symbols-outlined text-black font-bold text-sm">stars</span>
+                        <span class="font-label-md text-label-md uppercase tracking-wider text-black">PENDIRI &amp; KETUA AMIL MAHASISWA</span>
+                    </div>
+                </div>
+                <div class="bg-surface-container-lowest border-2 border-black rounded-2xl rounded-tl-none p-space-md md:p-space-xl shadow-[6px_6px_0px_#000000]">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+                        <!-- Photo Wrapper Pendiri -->
+                        <div class="lg:col-span-5 flex flex-col items-center">
+                            <div class="relative w-full max-w-sm">
+                                <div class="absolute inset-0 bg-primary-container rounded-2xl border-2 border-black translate-x-3 translate-y-3"></div>
+                                <div class="relative bg-white rounded-2xl border-2 border-black overflow-hidden shadow-[4px_4px_0px_#000000]">
+                                    <img id="founder-photo-img" alt="Foto Wajah Asli Pendiri Zakara" class="w-full h-80 object-cover object-top" src="asset/pendiri.jpeg" onerror="this.src='https://placehold.co/600x600/FFD12E/000000?text=Foto+Pendiri'"/>
+                                    <div class="p-space-sm bg-surface-container-lowest border-t-2 border-black flex items-center justify-between">
+                                        <div>
+                                            <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">VERIFIKASI MAHASISWA</span>
+                                            <span class="font-label-md text-label-md text-black font-bold">ZKR-LEAD-001</span>
+                                        </div>
+                                        <div class="flex items-center gap-1 bg-secondary-container px-2 py-0.5 rounded border border-black text-black font-label-sm text-label-sm">
+                                            <span class="material-symbols-outlined text-xs font-bold">check_circle</span>
+                                            FOTO ASLI
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Identity & Vision Narrative -->
+                        <div class="lg:col-span-7 flex flex-col gap-space-sm mt-space-md lg:mt-0">
+                            <div class="flex flex-wrap items-center gap-space-xs">
+                                <span class="px-2.5 py-0.5 bg-primary-fixed border border-black rounded font-label-sm text-label-sm text-black uppercase font-bold">
+                                    NIM: 24108010016
+                                </span>
+                                <span class="px-2.5 py-0.5 bg-surface-container-high border border-black rounded font-label-sm text-label-sm text-black">
+                                    Program Studi Ekonomi Syariah
+                                </span>
+                            </div>
+                            <div>
+                                <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-black uppercase tracking-tight">
+                                    Raihan Abdul Azis
+                                </h2>
+                                <p class="font-label-lg text-label-lg text-on-surface-variant mt-1">
+                                    Pendiri &amp; Ketua Amil Pelaksana Zakara
+                                </p>
+                            </div>
+                            <div class="bg-surface-container-low border-2 border-black rounded-xl p-space-md shadow-[3px_3px_0px_#000000]">
+                                <h3 class="font-title-lg text-title-lg text-black uppercase mb-1 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-black font-bold text-base">manage_accounts</span>
+                                    Peran &amp; Tanggung Jawab Strategis
+                                </h3>
+                                <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                    Memimpin perencanaan kampanye penghimpunan ZISWAF, verifikasi kelayakan mustahik 8 asnaf berbasis Had Kifayah, pengelolaan pemisahan rekening akad syariah, serta pelaporan neraca publik kepada dosen dan donatur.
+                                </p>
+                            </div>
+                            <div class="bg-primary-fixed/40 border-2 border-black rounded-xl p-space-md shadow-[3px_3px_0px_#000000]">
+                                <blockquote class="font-body-md text-body-md text-black italic font-semibold">
+                                    “Zakat bukan sekadar memindahkan rupiah, melainkan ikhtiar mengangkat harkat mustahik menjadi muzakki baru melalui transparansi tanpa celah.”
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAGIAN BAWAH: Susunan Pengurus Inti & Korps Relawan (Syarat P9) -->
+            <section class="w-full px-margin-mobile md:px-margin pb-space-xl">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-space-md">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary-container border-2 border-black rounded-full font-label-sm text-label-sm text-black uppercase tracking-wider shadow-[2px_2px_0px_#000000] mb-2">
+                            <span class="material-symbols-outlined text-sm font-bold">groups</span>
+                            STRUKTUR PELAKSANA HARIAN
+                        </span>
+                        <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-black uppercase tracking-tight">
+                            SUSUNAN PENGURUS INTI ZAKARA
+                        </h2>
+                    </div>
+                    <span class="px-3 py-1.5 bg-surface-container-lowest border-2 border-black rounded-lg font-label-sm text-label-sm text-black shadow-[2px_2px_0px_#000000]">
+                        PERIODE KEPENGURUSAN 2026
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+                    <!-- Pengurus 1 -->
+                    <div class="bg-surface-container-lowest border-2 border-black rounded-2xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-space-sm">
+                                <img src="asset/pengurus-1.jpeg" alt="Foto Sekretaris Umum" class="w-16 h-16 rounded-xl border-2 border-black object-cover object-top bg-primary-fixed" onerror="this.src='https://placehold.co/200x200/FFD12E/000000?text=SEKUM'"/>
+                                <div>
+                                    <span class="inline-block px-2 py-0.5 bg-primary-container border border-black rounded font-label-sm text-label-sm text-black uppercase font-bold mb-1">
+                                        SEKRETARIS UMUM
+                                    </span>
+                                    <h3 class="font-title-lg text-title-lg text-black leading-tight">Ksatria Adi Pradana</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">NIM: 24108010*** • Ekonomi Syariah</p>
+                                </div>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                Mengelola administrasi persuratan lembaga, penerbitan Bukti Setor Zakat (BSZ), serta dokumentasi legalitas dan arsip berita acara penyaluran.
+                            </p>
+                        </div>
+                        <div class="mt-space-sm pt-2 border-t border-black/20 flex items-center justify-between font-label-sm text-label-sm text-black">
+                            <span>KODE UNIT: ZKR-ADM-002</span>
+                            <span class="px-2 py-0.5 bg-secondary-container border border-black rounded">AKTIF</span>
+                        </div>
+                    </div>
+
+                    <!-- Pengurus 2 -->
+                    <div class="bg-surface-container-lowest border-2 border-black rounded-2xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-space-sm">
+                                <img src="asset/pengurus-2.jpeg" alt="Foto Bendahara & Akuntansi Syariah" class="w-16 h-16 rounded-xl border-2 border-black object-cover object-top bg-primary-fixed" onerror="this.src='https://placehold.co/200x200/FFD12E/000000?text=BEND'"/>
+                                <div>
+                                    <span class="inline-block px-2 py-0.5 bg-primary-container border border-black rounded font-label-sm text-label-sm text-black uppercase font-bold mb-1">
+                                        BENDAHARA &amp; KEUANGAN
+                                    </span>
+                                    <h3 class="font-title-lg text-title-lg text-black leading-tight">Muhamad Rafly Nashrullah</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">NIM: 24108020*** • Ekonomi Syariah</p>
+                                </div>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                Bertanggung jawab atas pencatatan kas masuk-keluar sesuai PSAK 109, pemisahan rekening dana Zakat, Infaq/Sedekah, dan Wakaf, serta rekonsiliasi saldo.
+                            </p>
+                        </div>
+                        <div class="mt-space-sm pt-2 border-t border-black/20 flex items-center justify-between font-label-sm text-label-sm text-black">
+                            <span>KODE UNIT: ZKR-FIN-003</span>
+                            <span class="px-2 py-0.5 bg-secondary-container border border-black rounded">AKTIF</span>
+                        </div>
+                    </div>
+
+                    <!-- Pengurus 3 -->
+                    <div class="bg-surface-container-lowest border-2 border-black rounded-2xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-space-sm">
+                                <img src="asset/pengurus-3.jpeg" alt="Foto Kadiv Penghimpunan" class="w-16 h-16 rounded-xl border-2 border-black object-cover object-top bg-primary-fixed" onerror="this.src='https://placehold.co/200x200/FFD12E/000000?text=FUND'"/>
+                                <div>
+                                    <span class="inline-block px-2 py-0.5 bg-primary-container border border-black rounded font-label-sm text-label-sm text-black uppercase font-bold mb-1">
+                                        DIVISI PENGHIMPUNAN
+                                    </span>
+                                    <h3 class="font-title-lg text-title-lg text-black leading-tight">Fatahsya Sina Albana</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">NIM: 24108030*** • Ekonomi Syariah</p>
+                                </div>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                Mengoordinasikan kampanye literasi ZISWAF, layanan konsultasi hitung zakat muzakki, serta kemitraan donatur komunitas dan mahasiswa.
+                            </p>
+                        </div>
+                        <div class="mt-space-sm pt-2 border-t border-black/20 flex items-center justify-between font-label-sm text-label-sm text-black">
+                            <span>KODE UNIT: ZKR-FND-004</span>
+                            <span class="px-2 py-0.5 bg-secondary-container border border-black rounded">AKTIF</span>
+                        </div>
+                    </div>
+
+                    <!-- Pengurus 4 -->
+                    <div class="bg-surface-container-lowest border-2 border-black rounded-2xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-space-sm">
+                                <img src="asset/pengurus-4.jpeg" alt="Foto Kadiv Pendistribusian" class="w-16 h-16 rounded-xl border-2 border-black object-cover object-top bg-primary-fixed" onerror="this.src='https://placehold.co/200x200/FFD12E/000000?text=DIST'"/>
+                                <div>
+                                    <span class="inline-block px-2 py-0.5 bg-primary-container border border-black rounded font-label-sm text-label-sm text-black uppercase font-bold mb-1">
+                                        DIVISI PENDISTRIBUSIAN
+                                    </span>
+                                    <h3 class="font-title-lg text-title-lg text-black leading-tight">Achmad Raisal Amin</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">NIM: 24108010*** • Ekonomi Syariah</p>
+                                </div>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                Melakukan survei faktual lapangan, verifikasi kelayakan mustahik 8 asnaf berbasis standar Had Kifayah, serta pendampingan usaha produktif.
+                            </p>
+                        </div>
+                        <div class="mt-space-sm pt-2 border-t border-black/20 flex items-center justify-between font-label-sm text-label-sm text-black">
+                            <span>KODE UNIT: ZKR-DST-005</span>
+                            <span class="px-2 py-0.5 bg-secondary-container border border-black rounded">AKTIF</span>
+                        </div>
+                    </div>
+
+                    <!-- Pengurus 5 -->
+                    <div class="bg-surface-container-lowest border-2 border-black rounded-2xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-space-sm">
+                                <img src="asset/pengurus-5.jpeg" alt="Foto Kadiv Media & Transparansi" class="w-16 h-16 rounded-xl border-2 border-black object-cover object-top bg-primary-fixed" onerror="this.src='https://placehold.co/200x200/FFD12E/000000?text=MED'"/>
+                                <div>
+                                    <span class="inline-block px-2 py-0.5 bg-primary-container border border-black rounded font-label-sm text-label-sm text-black uppercase font-bold mb-1">
+                                        MEDIA &amp; DOKUMENTASI
+                                    </span>
+                                    <h3 class="font-title-lg text-title-lg text-black leading-tight">Muh Fahrul Reza</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">NIM: 24105010*** • Ekonomi Syariah</p>
+                                </div>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                Mengelola publikasi bukti dokumentasi penyaluran lapangan (3 matra filantropi), laporan visual bulanan, serta keterbukaan informasi publik.
+                            </p>
+                        </div>
+                        <div class="mt-space-sm pt-2 border-t border-black/20 flex items-center justify-between font-label-sm text-label-sm text-black">
+                            <span>KODE UNIT: ZKR-MED-006</span>
+                            <span class="px-2 py-0.5 bg-secondary-container border border-black rounded">AKTIF</span>
+                        </div>
+                    </div>
+
+                    <!-- Pengurus 6 -->
+                    <div class="bg-surface-container-lowest border-2 border-black rounded-2xl p-space-md shadow-[4px_4px_0px_#000000] flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-space-sm">
+                                <img src="asset/pengurus-6.jpeg" alt="Foto Pengawas Syariah & Audit" class="w-16 h-16 rounded-xl border-2 border-black object-cover object-top bg-primary-fixed" onerror="this.src='https://placehold.co/200x200/FFD12E/000000?text=AUD'"/>
+                                <div>
+                                    <span class="inline-block px-2 py-0.5 bg-secondary-container border border-black rounded font-label-sm text-label-sm text-black uppercase font-bold mb-1">
+                                        PENGAWAS SYARIAH &amp; AUDIT
+                                    </span>
+                                    <h3 class="font-title-lg text-title-lg text-black leading-tight">Khairul Rizal Harahap</h3>
+                                    <p class="font-label-sm text-label-sm text-on-surface-variant">NIM: 24103010*** • Ekonomi Syariah</p>
+                                </div>
+                            </div>
+                            <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                                Mengawasi kepatuhan akad syariah (Zakat, Infaq/Sedekah, Wakaf), batas hak amil maksimal 12,5%, serta audit kesesuaian neraca berkala.
+                            </p>
+                        </div>
+                        <div class="mt-space-sm pt-2 border-t border-black/20 flex items-center justify-between font-label-sm text-label-sm text-black">
+                            <span>KODE UNIT: ZKR-AUD-007</span>
+                            <span class="px-2 py-0.5 bg-secondary-container border border-black rounded">AKTIF</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+<!-- ===================================================================== -->
+    <!-- MODAL DONASI SIMULASI INTERAKTIF (Pengganti alert, sinkron ke tabel)   -->
+    <!-- ===================================================================== -->
+    <div id="donation-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs hidden p-margin-mobile">
+        <div class="bg-surface-container-lowest border-2 border-black rounded-xl p-space-lg max-w-lg w-full shadow-[8px_8px_0px_#000000] relative">
+            <div class="flex items-center justify-between pb-space-sm border-b-2 border-black mb-space-md">
+                <div class="flex items-center gap-space-xs">
+                    <span class="w-3 h-3 bg-secondary rounded-full border border-black"></span>
+                    <span class="font-label-md text-label-md uppercase tracking-wider text-black">Formulir Akad Donasi (Simulasi)</span>
+                </div>
+                <button type="button" onclick="closeDonationModal()" class="w-8 h-8 rounded-lg border-2 border-black bg-surface-container hover:bg-error-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[18px] font-bold">close</span>
+                </button>
+            </div>
+
+            <div class="bg-primary-fixed border-2 border-black p-space-xs rounded-lg mb-space-md flex items-center gap-space-xs">
+                <span class="material-symbols-outlined text-black text-sm font-bold">warning</span>
+                <span class="font-label-sm text-label-sm uppercase font-bold text-black">Simulasi Tugas Kuliah — Data tercatat langsung ke Rekap Donatur</span>
+            </div>
+
+            <form onsubmit="submitDonationModal(event)" class="space-y-space-sm">
+                <div>
+                    <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Program / Kampanye Pilihan</label>
+                    <input id="modal-program-name" readonly type="text" value="Pemberdayaan 50 Warung Barokah Dhuafa" class="w-full bg-surface-container border-2 border-black rounded-lg px-space-sm py-2 font-title-lg text-title-lg text-black"/>
+                </div>
+                <div>
+                    <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Jenis Akad Syariah</label>
+                    <select id="modal-akad-select" class="w-full bg-surface-container-lowest border-2 border-black rounded-lg px-space-sm py-2 font-body-md text-body-md">
+                        <option value="Zakat Maal">Zakat Maal (8 Asnaf)</option>
+                        <option value="Infaq Produktif">Infaq &amp; Sedekah Produktif</option>
+                        <option value="Wakaf Sarana">Wakaf Tunai / Sarana</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Nominal Donasi Simulasi (IDR)</label>
+                    <div class="flex items-center border-2 border-black rounded-lg bg-surface-container-lowest overflow-hidden shadow-[3px_3px_0px_#000000]">
+                        <span class="bg-primary-container font-headline-sm text-headline-sm px-space-sm py-2 border-r-2 border-black text-black font-bold">Rp</span>
+                        <input id="modal-amount-input" type="number" min="10000" step="10000" required value="250000" class="w-full px-space-sm py-2 font-title-lg text-title-lg focus:outline-none"/>
+                    </div>
+                </div>
+                <div>
+                    <label class="font-label-sm text-label-sm uppercase text-on-surface-variant block mb-1">Nama Donatur (Boleh Samaran)</label>
+                    <input id="modal-donor-name" type="text" placeholder="Hamba Allah" value="Hamba Allah" class="w-full bg-surface-container-lowest border-2 border-black rounded-lg px-space-sm py-2 font-body-md text-body-md shadow-[2px_2px_0px_#000000]"/>
+                </div>
+                <div class="pt-space-xs">
+                    <button type="submit" class="w-full bg-primary-container text-black font-title-lg text-title-lg uppercase border-2 border-black rounded-xl py-3 shadow-[4px_4px_0px_#000000] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex items-center justify-center gap-space-xs">
+                        <span class="material-symbols-outlined font-bold">check_circle</span>
+                        <span>Konfirmasi Transaksi Simulasi</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Toast Notification (Menggantikan alert() di seluruh halaman) -->
+    <div id="toast-notification" class="fixed bottom-5 right-5 z-50 hidden bg-black text-white border-2 border-primary-container px-4 py-3 rounded-xl shadow-[4px_4px_0px_#FFD12E] max-w-sm flex items-center gap-2.5">
+        <span class="material-symbols-outlined text-primary-container font-bold">info</span>
+        <span id="toast-text" class="font-body-sm text-body-sm"></span>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- FOOTER WAJIB (Ketentuan W7: Pernyataan Penggunaan AI & Link 7 Halaman) -->
+    <!-- ===================================================================== -->
+    <footer class="w-full bg-surface-container-lowest border-t-2 border-black mt-space-xl">
+        <div class="w-full px-margin-mobile md:px-margin py-space-xl">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-space-xl">
+                <!-- Kolom 1: Identitas -->
+                <div class="md:col-span-4 flex flex-col gap-space-sm">
+                    <div class="flex items-center gap-space-sm">
+                        <div class="w-8 h-8 rounded-lg bg-primary-container border-2 border-black flex items-center justify-center">
+                            <span class="material-symbols-outlined text-black font-bold text-lg">volunteer_activism</span>
+                        </div>
+                        <span class="font-headline-sm text-headline-sm font-bold text-black uppercase">Zakara</span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Lembaga Pengelola Zakat, Infaq, Shadaqah, dan Wakaf dengan akuntabilitas digital, pemisahan akad syariah, dan pelaporan neraca berimbang.
+                    </p>
+                </div>
+
+                <!-- Kolom 2: Navigasi Cepat 7 Halaman -->
+                <div class="md:col-span-4 flex flex-col gap-space-xs">
+                    <h4 class="font-title-lg text-title-lg text-black uppercase mb-space-xs">7 Halaman Utama </h4>
+                    <div class="grid grid-cols-2 gap-1.5 font-body-sm text-body-sm">
+                        <a href="index.html" class="text-left hover:underline font-semibold">1. Beranda</a>
+                        <a href="profil.html" class="text-left hover:underline font-semibold">2. Profil Kepengurusan</a>
+                        <a href="program.html" class="text-left hover:underline font-semibold">3. Program</a>
+                        <a href="donasi.html" class="text-left hover:underline font-semibold">4. Donasi &amp; Kampanye</a>
+                        <a href="laporan.html" class="text-left hover:underline font-semibold">5. Laporan &amp; Neraca</a>
+                        <a href="galeri-bukti.html" class="text-left hover:underline font-semibold">6. Galeri Bukti</a>
+                        <a href="kontak.html" class="text-left hover:underline font-semibold">7. Kontak &amp; Verifikasi</a>
+                    </div>
+                </div>
+
+                <!-- Kolom 3: Ketentuan Wajib W7 (Pernyataan Penggunaan AI) -->
+                <div class="md:col-span-4 flex flex-col justify-start">
+                    <div class="bg-primary-fixed border-2 border-black p-space-md rounded-xl shadow-[3px_3px_0px_#000000]">
+                        <div class="flex items-center gap-space-xs mb-space-xs">
+                            <span class="material-symbols-outlined text-black font-bold text-base">smart_toy</span>
+                            <span class="font-label-sm text-label-sm uppercase text-black font-bold">Pernyataan Penggunaan AI </span>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-black leading-snug font-medium">
+                            Teks dan struktur kode HTML/Tailwind website ini dibantu menggunakan AI (<strong>Gemini &amp; Stitch UI</strong>). Seluruh konsep program 10 poin, perhitungan neraca syariah, dan verifikasi data dipahami dan disusun oleh mahasiswa untuk keperluan tugas kuliah.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t-2 border-black pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm">
+                <p class="font-label-md text-label-md text-on-surface-variant text-center md:text-left">
+                    © 2026–2027 Zakara • SIMULASI – TUGAS KULIAH
+                </p>
+                <div class="flex items-center gap-space-sm">
+                    <span class="font-label-sm text-label-sm uppercase bg-surface-container px-space-sm py-1 border border-black rounded">Hak Amil 8,20% (≤ 12,5%)</span>
+                    <span class="font-label-sm text-label-sm uppercase bg-secondary-container text-black px-space-sm py-1 border border-black rounded shadow-[1px_1px_0px_#000000]">Neraca Seimbang </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script src="app.js"></script>
+</body>
+</html>
