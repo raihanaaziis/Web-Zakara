@@ -5,7 +5,7 @@
 
 // Anti-Cache Otomatis: Memaksa browser HP selalu mengambil versi terbaru
 (function enforceFreshVersion() {
-    const CURRENT_VER = '2026.11.21.v5';
+    const CURRENT_VER = '2026.11.21.v6';
     const url = new URL(window.location.href);
     if (url.searchParams.get('v') !== CURRENT_VER) {
         url.searchParams.set('v', CURRENT_VER);
@@ -99,47 +99,57 @@ function applyResponsiveFixesAndFaviconLogo() {
         document.head.appendChild(style);
     }
 
-    // Cari navbar utama di bagian paling atas halaman
-    const navBar = document.querySelector('header.fixed, nav.fixed, header.sticky, nav.sticky, header, nav');
+    // Cari navbar yang benar-benar terlihat dan berada di bagian atas layar
+    function findTopNavbar() {
+        const candidates = Array.from(document.querySelectorAll('header, nav, [role="navigation"]'));
+        // Prioritaskan elemen yang memiliki posisi fixed atau sticky dengan tinggi > 0
+        for (const el of candidates) {
+            const st = window.getComputedStyle(el);
+            const rect = el.getBoundingClientRect();
+            if ((st.position === 'fixed' || st.position === 'sticky') && rect.height > 20 && rect.top <= 20) {
+                return el;
+            }
+        }
+        // Fallback: ambil header/nav pertama yang tingginya > 20px
+        return candidates.find(el => el.getBoundingClientRect().height > 20) || candidates[0] || null;
+    }
+
+    const navBar = findTopNavbar();
 
     function syncTopOffset() {
-        if (!navBar) return;
-        const navRect = navBar.getBoundingClientRect();
-        const navHeight = Math.ceil(navRect.height);
-        const navStyle = window.getComputedStyle(navBar);
+        const activeNav = findTopNavbar() || navBar;
+        if (!activeNav) return;
 
-        document.documentElement.style.scrollPaddingTop = (navHeight + 20) + 'px';
+        const navRect = activeNav.getBoundingClientRect();
+        // Minimal anggap tinggi navbar 76px jika belum ter-render penuh
+        const navHeight = Math.max(76, Math.ceil(navRect.height));
+        const navStyle = window.getComputedStyle(activeNav);
 
-        // Cari elemen konten utama tepat setelah navbar
-        let firstContent = document.querySelector('main');
-        if (!firstContent) {
-            let sibling = navBar.nextElementSibling;
-            while (sibling && (sibling.tagName === 'SCRIPT' || sibling.id === 'mobile-nav-drawer' || sibling.id === 'zakara-nav-spacer')) {
-                sibling = sibling.nextElementSibling;
-            }
-            firstContent = sibling;
-        }
+        document.documentElement.style.scrollPaddingTop = (navHeight + 24) + 'px';
+
+        // Cari elemen konten utama pertama di dalam halaman
+        const mainEl = document.querySelector('main');
+        const firstSection = mainEl ? (mainEl.firstElementChild || mainEl) : null;
 
         if (navStyle.position === 'fixed') {
-            // Sisipkan spacer fisik setinggi navbar + jarak aman agar konten atas TIDAK PERNAH tenggelam saat di-scroll ke atas
-            let spacer = document.getElementById('zakara-nav-spacer');
-            if (!spacer) {
-                spacer = document.createElement('div');
-                spacer.id = 'zakara-nav-spacer';
-                spacer.setAttribute('aria-hidden', 'true');
-                navBar.insertAdjacentElement('afterend', spacer);
-            }
-            spacer.style.display = 'block';
-            spacer.style.width = '100%';
-            spacer.style.height = (navHeight + 16) + 'px';
+            // Dorong seluruh body ke bawah seukuran tinggi navbar + ruang napas 24px
+            // Cara ini menjamin konten paling atas TIDAK PERNAH ketutup saat di-scroll mentok ke atas di HP!
+            document.body.style.paddingTop = (navHeight + 24) + 'px';
 
-            if (firstContent) {
-                firstContent.style.marginTop = '0px';
+            // Hapus spacer lama jika ada agar tidak ganda
+            const oldSpacer = document.getElementById('zakara-nav-spacer');
+            if (oldSpacer) oldSpacer.remove();
+
+            // Jika elemen pertama punya padding-top bawaan besar (misal pt-28), rapikan secukupnya
+            if (mainEl) mainEl.style.paddingTop = '0px';
+            if (firstSection && firstSection !== mainEl) {
+                firstSection.style.paddingTop = '0px';
             }
-        } else if (navStyle.position === 'sticky' && firstContent) {
-            const currentPt = parseFloat(window.getComputedStyle(firstContent).paddingTop) || 0;
-            if (currentPt < 20) {
-                firstContent.style.paddingTop = '20px';
+        } else if (navStyle.position === 'sticky') {
+            document.body.style.paddingTop = '0px';
+            if (mainEl) {
+                const curPt = parseFloat(window.getComputedStyle(mainEl).paddingTop) || 0;
+                if (curPt < 24) mainEl.style.paddingTop = '24px';
             }
         }
 
@@ -152,9 +162,9 @@ function applyResponsiveFixesAndFaviconLogo() {
         }
     }
 
-    // Jalankan beberapa kali saat render awal & setelah font/gambar selesai dimuat
     syncTopOffset();
     requestAnimationFrame(syncTopOffset);
+    setTimeout(syncTopOffset, 150);
     window.addEventListener('load', syncTopOffset);
     window.addEventListener('resize', syncTopOffset);
     if (navBar && typeof ResizeObserver !== 'undefined') {
