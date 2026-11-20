@@ -1,11 +1,11 @@
 // =========================================================================
 // MINI-DATABASE SIMULASI ZAKARA (LOCALSTORAGE ENGINE - PERSISTEN PER DEVICE)
-// Mobile Navbar Flow Fix (Anti-Tenggelam 100%) + Logo Favicon + Nominal Bebas
+// Mobile Top-Bar & Banner Offset Fix (v8) + Logo Favicon + Nominal Bebas
 // =========================================================================
 
-// Anti-Cache Otomatis: Memaksa browser HP selalu mengambil versi terbaru
+// Anti-Cache Otomatis: Memaksa browser HP (Safari/Chrome) selalu mengambil versi terbaru
 (function enforceFreshVersion() {
-    const CURRENT_VER = '2026.11.21.v7';
+    const CURRENT_VER = '2026.11.21.v8';
     const url = new URL(window.location.href);
     if (url.searchParams.get('v') !== CURRENT_VER) {
         url.searchParams.set('v', CURRENT_VER);
@@ -56,7 +56,7 @@ let modalContext = {
 };
 
 // =========================================================================
-// 0. RESPONSIVE VIEWPORT FIX (ANTI-TENGGELAM DI HP) & LOGO FAVICON
+// 0. RESPONSIVE VIEWPORT FIX (ANTI-TENGGELAM DI HP & SAFARI iOS) + LOGO FAVICON
 // =========================================================================
 function applyResponsiveFixesAndFaviconLogo() {
     if (!document.getElementById('zakara-responsive-style')) {
@@ -83,17 +83,22 @@ function applyResponsiveFixesAndFaviconLogo() {
             table {
                 width: 100%;
             }
-            /* KHUSUS LAYAR HP: Jadikan header/navbar mengalir normal di atas halaman
-               sehingga konten paling atas TIDAK PERNAH tenggelam di balik navbar */
             @media (max-width: 768px) {
-                header, nav, header.fixed, nav.fixed, header.sticky, nav.sticky {
+                /* Ubah SEMUA pembungkus top-bar (baik header, nav, maupun div.fixed/sticky di atas)
+                   menjadi aliran normal agar tidak pernah menimpa konten atas di HP */
+                body > header,
+                body > nav,
+                body > div.fixed,
+                body > div.sticky,
+                header.fixed,
+                header.sticky,
+                nav.fixed,
+                nav.sticky {
                     position: relative !important;
                     top: auto !important;
                     left: auto !important;
                     right: auto !important;
                     width: 100% !important;
-                    padding-left: 0.75rem !important;
-                    padding-right: 0.75rem !important;
                 }
                 #mobile-nav-drawer {
                     position: relative !important;
@@ -101,14 +106,21 @@ function applyResponsiveFixesAndFaviconLogo() {
                     width: 100% !important;
                     max-height: none !important;
                 }
-                main {
-                    padding-top: 1.25rem !important;
+                /* Beri ruang napas lega di bagian atas konten utama semua halaman */
+                main,
+                body > section:first-of-type {
+                    padding-top: 1.5rem !important;
                     margin-top: 0 !important;
+                }
+                /* Tambah ruang bawah agar tidak tertutup floating bar Safari iPhone */
+                footer,
+                body {
+                    padding-bottom: 5rem !important;
                 }
                 #toast-notification {
                     left: 0.75rem !important;
                     right: 0.75rem !important;
-                    bottom: 0.75rem !important;
+                    bottom: 5rem !important;
                     max-width: calc(100vw - 1.5rem) !important;
                 }
             }
@@ -116,8 +128,38 @@ function applyResponsiveFixesAndFaviconLogo() {
         document.head.appendChild(style);
     }
 
-    // Pastikan tidak ada paddingTop liar di body
-    document.body.style.paddingTop = '0px';
+    // Pastikan jika ada elemen fixed yang masih menempel di atas (top <= 10px),
+    // konten di bawahnya otomatis didorong sejauh tinggi total elemen tersebut
+    function adjustForAnyFixedTopBar() {
+        const isMobile = window.innerWidth <= 768;
+        let maxFixedBottom = 0;
+
+        document.querySelectorAll('header, nav, body > div').forEach(el => {
+            if (el.id === 'donation-modal' || el.id === 'distribute-modal' || el.id === 'toast-notification') return;
+            const st = window.getComputedStyle(el);
+            const rect = el.getBoundingClientRect();
+            if (st.position === 'fixed' && rect.top <= 10 && rect.height > 20 && rect.height < 300) {
+                if (isMobile) {
+                    el.style.setProperty('position', 'relative', 'important');
+                    el.style.setProperty('top', 'auto', 'important');
+                } else {
+                    maxFixedBottom = Math.max(maxFixedBottom, Math.ceil(rect.bottom));
+                }
+            }
+        });
+
+        const mainEl = document.querySelector('main');
+        if (!isMobile && maxFixedBottom > 0 && mainEl) {
+            const curPt = parseFloat(window.getComputedStyle(mainEl).paddingTop) || 0;
+            if (curPt < maxFixedBottom + 20) {
+                mainEl.style.paddingTop = (maxFixedBottom + 24) + 'px';
+            }
+        }
+    }
+
+    adjustForAnyFixedTopBar();
+    requestAnimationFrame(adjustForAnyFixedTopBar);
+    window.addEventListener('resize', adjustForAnyFixedTopBar);
 
     // Sinkronkan logo pada Navbar agar sama persis dengan Favicon halaman
     const navBar = document.querySelector('header, nav');
