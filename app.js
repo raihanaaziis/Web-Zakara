@@ -5,7 +5,7 @@
 
 // Anti-Cache Otomatis: Memaksa browser HP selalu mengambil versi terbaru
 (function enforceFreshVersion() {
-    const CURRENT_VER = '2026.11.21.v4'; // Naikkan angka ini (v5, v6, dst.) setiap kali update besar
+    const CURRENT_VER = '2026.11.21.v5';
     const url = new URL(window.location.href);
     if (url.searchParams.get('v') !== CURRENT_VER) {
         url.searchParams.set('v', CURRENT_VER);
@@ -56,29 +56,30 @@ let modalContext = {
 };
 
 // =========================================================================
-// 0. RESPONSIVE VIEWPORT FIX & SYNC LOGO NAVBAR DENGAN FAVICON
+// 0. RESPONSIVE VIEWPORT FIX (ANTI-TENGGELAM DI HP) & LOGO FAVICON
 // =========================================================================
 function applyResponsiveFixesAndFaviconLogo() {
-    // A. Suntikkan CSS responsif global agar fleksibel di HP, tablet, & desktop
     if (!document.getElementById('zakara-responsive-style')) {
         const style = document.createElement('style');
         style.id = 'zakara-responsive-style';
         style.textContent = `
-            html, body {
-                max-width: 100%;
-                overflow-x: hidden;
+            html {
+                scroll-behavior: smooth;
+                overflow-x: clip;
+            }
+            body {
+                overflow-x: clip;
+                min-height: 100dvh;
             }
             img, svg, video, canvas {
                 max-width: 100%;
                 height: auto;
             }
-            /* Pastikan modal donasi/penyaluran tidak terpotong di layar HP pendek */
             #donation-modal > div,
             #distribute-modal > div {
-                max-height: 90vh;
+                max-height: 90dvh;
                 overflow-y: auto;
             }
-            /* Cegah tabel melebar keluar layar HP */
             table {
                 width: 100%;
             }
@@ -98,9 +99,8 @@ function applyResponsiveFixesAndFaviconLogo() {
         document.head.appendChild(style);
     }
 
-    // B. Hitung tinggi navbar secara dinamis agar konten atas TIDAK pernah ketutup di HP maupun Desktop
-    const navBar = document.querySelector('header.fixed, nav.fixed, header, nav');
-    const mainContent = document.querySelector('main') || document.body.children[1];
+    // Cari navbar utama di bagian paling atas halaman
+    const navBar = document.querySelector('header.fixed, nav.fixed, header.sticky, nav.sticky, header, nav');
 
     function syncTopOffset() {
         if (!navBar) return;
@@ -108,32 +108,60 @@ function applyResponsiveFixesAndFaviconLogo() {
         const navHeight = Math.ceil(navRect.height);
         const navStyle = window.getComputedStyle(navBar);
 
-        document.documentElement.style.scrollPaddingTop = (navHeight + 16) + 'px';
+        document.documentElement.style.scrollPaddingTop = (navHeight + 20) + 'px';
 
-        if (mainContent && (navStyle.position === 'fixed' || navStyle.position === 'sticky')) {
-            const currentPt = parseFloat(window.getComputedStyle(mainContent).paddingTop) || 0;
-            const targetPt = navHeight + 20;
-            if (currentPt < targetPt || navStyle.position === 'fixed') {
-                mainContent.style.paddingTop = targetPt + 'px';
+        // Cari elemen konten utama tepat setelah navbar
+        let firstContent = document.querySelector('main');
+        if (!firstContent) {
+            let sibling = navBar.nextElementSibling;
+            while (sibling && (sibling.tagName === 'SCRIPT' || sibling.id === 'mobile-nav-drawer' || sibling.id === 'zakara-nav-spacer')) {
+                sibling = sibling.nextElementSibling;
+            }
+            firstContent = sibling;
+        }
+
+        if (navStyle.position === 'fixed') {
+            // Sisipkan spacer fisik setinggi navbar + jarak aman agar konten atas TIDAK PERNAH tenggelam saat di-scroll ke atas
+            let spacer = document.getElementById('zakara-nav-spacer');
+            if (!spacer) {
+                spacer = document.createElement('div');
+                spacer.id = 'zakara-nav-spacer';
+                spacer.setAttribute('aria-hidden', 'true');
+                navBar.insertAdjacentElement('afterend', spacer);
+            }
+            spacer.style.display = 'block';
+            spacer.style.width = '100%';
+            spacer.style.height = (navHeight + 16) + 'px';
+
+            if (firstContent) {
+                firstContent.style.marginTop = '0px';
+            }
+        } else if (navStyle.position === 'sticky' && firstContent) {
+            const currentPt = parseFloat(window.getComputedStyle(firstContent).paddingTop) || 0;
+            if (currentPt < 20) {
+                firstContent.style.paddingTop = '20px';
             }
         }
 
         // Sesuaikan posisi mobile drawer tepat di bawah navbar
         const mobileDrawer = document.getElementById('mobile-nav-drawer');
-        if (mobileDrawer && navStyle.position === 'fixed') {
+        if (mobileDrawer && (navStyle.position === 'fixed' || navStyle.position === 'sticky')) {
             mobileDrawer.style.top = navHeight + 'px';
-            mobileDrawer.style.maxHeight = `calc(100vh - ${navHeight}px)`;
+            mobileDrawer.style.maxHeight = `calc(100dvh - ${navHeight}px)`;
             mobileDrawer.style.overflowY = 'auto';
         }
     }
 
+    // Jalankan beberapa kali saat render awal & setelah font/gambar selesai dimuat
     syncTopOffset();
+    requestAnimationFrame(syncTopOffset);
+    window.addEventListener('load', syncTopOffset);
     window.addEventListener('resize', syncTopOffset);
     if (navBar && typeof ResizeObserver !== 'undefined') {
         new ResizeObserver(syncTopOffset).observe(navBar);
     }
 
-    // C. Ganti logo pada Navbar agar sama persis dengan Favicon halaman
+    // Sinkronkan logo pada Navbar agar sama persis dengan Favicon halaman
     const faviconLink = document.querySelector('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]');
     const faviconHref = faviconLink ? faviconLink.getAttribute('href') : '';
 
@@ -146,7 +174,6 @@ function applyResponsiveFixesAndFaviconLogo() {
                 existingImg.alt = 'Logo Zakara';
                 existingImg.classList.add('object-contain');
             } else {
-                // Cari kotak ikon/SVG logo di sebelah teks Zakara dan ganti dengan gambar favicon
                 const iconBox = brandAnchor.querySelector('div, span.material-symbols-outlined, svg');
                 if (iconBox) {
                     const logoImg = document.createElement('img');
