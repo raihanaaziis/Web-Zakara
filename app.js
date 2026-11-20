@@ -1,6 +1,6 @@
 // =========================================================================
 // MINI-DATABASE SIMULASI ZAKARA (LOCALSTORAGE ENGINE - PERSISTEN PER DEVICE)
-// Mendukung nominal acak bebas (step="1"), sinkronisasi 2 arah, & validasi Nisab
+// Responsive Layout Fix + Sync Logo Navbar dengan Favicon + Nominal Bebas
 // =========================================================================
 
 const ZAKARA_DB_KEY = 'zakara_mini_db_v2';
@@ -45,6 +45,111 @@ let modalContext = {
     calcAboveNisab: false
 };
 
+// =========================================================================
+// 0. RESPONSIVE VIEWPORT FIX & SYNC LOGO NAVBAR DENGAN FAVICON
+// =========================================================================
+function applyResponsiveFixesAndFaviconLogo() {
+    // A. Suntikkan CSS responsif global agar fleksibel di HP, tablet, & desktop
+    if (!document.getElementById('zakara-responsive-style')) {
+        const style = document.createElement('style');
+        style.id = 'zakara-responsive-style';
+        style.textContent = `
+            html, body {
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+            img, svg, video, canvas {
+                max-width: 100%;
+                height: auto;
+            }
+            /* Pastikan modal donasi/penyaluran tidak terpotong di layar HP pendek */
+            #donation-modal > div,
+            #distribute-modal > div {
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            /* Cegah tabel melebar keluar layar HP */
+            table {
+                width: 100%;
+            }
+            @media (max-width: 640px) {
+                header nav, nav.fixed, header.fixed, header.sticky {
+                    padding-left: 0.75rem !important;
+                    padding-right: 0.75rem !important;
+                }
+                #toast-notification {
+                    left: 0.75rem !important;
+                    right: 0.75rem !important;
+                    bottom: 0.75rem !important;
+                    max-width: calc(100vw - 1.5rem) !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // B. Hitung tinggi navbar secara dinamis agar konten atas TIDAK pernah ketutup di HP maupun Desktop
+    const navBar = document.querySelector('header.fixed, nav.fixed, header, nav');
+    const mainContent = document.querySelector('main') || document.body.children[1];
+
+    function syncTopOffset() {
+        if (!navBar) return;
+        const navRect = navBar.getBoundingClientRect();
+        const navHeight = Math.ceil(navRect.height);
+        const navStyle = window.getComputedStyle(navBar);
+
+        document.documentElement.style.scrollPaddingTop = (navHeight + 16) + 'px';
+
+        if (mainContent && (navStyle.position === 'fixed' || navStyle.position === 'sticky')) {
+            const currentPt = parseFloat(window.getComputedStyle(mainContent).paddingTop) || 0;
+            const targetPt = navHeight + 20;
+            if (currentPt < targetPt || navStyle.position === 'fixed') {
+                mainContent.style.paddingTop = targetPt + 'px';
+            }
+        }
+
+        // Sesuaikan posisi mobile drawer tepat di bawah navbar
+        const mobileDrawer = document.getElementById('mobile-nav-drawer');
+        if (mobileDrawer && navStyle.position === 'fixed') {
+            mobileDrawer.style.top = navHeight + 'px';
+            mobileDrawer.style.maxHeight = `calc(100vh - ${navHeight}px)`;
+            mobileDrawer.style.overflowY = 'auto';
+        }
+    }
+
+    syncTopOffset();
+    window.addEventListener('resize', syncTopOffset);
+    if (navBar && typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(syncTopOffset).observe(navBar);
+    }
+
+    // C. Ganti logo pada Navbar agar sama persis dengan Favicon halaman
+    const faviconLink = document.querySelector('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]');
+    const faviconHref = faviconLink ? faviconLink.getAttribute('href') : '';
+
+    if (faviconHref && navBar) {
+        const brandAnchor = navBar.querySelector('a[href*="index"], a');
+        if (brandAnchor) {
+            const existingImg = brandAnchor.querySelector('img');
+            if (existingImg) {
+                existingImg.src = faviconHref;
+                existingImg.alt = 'Logo Zakara';
+                existingImg.classList.add('object-contain');
+            } else {
+                // Cari kotak ikon/SVG logo di sebelah teks Zakara dan ganti dengan gambar favicon
+                const iconBox = brandAnchor.querySelector('div, span.material-symbols-outlined, svg');
+                if (iconBox) {
+                    const logoImg = document.createElement('img');
+                    logoImg.src = faviconHref;
+                    logoImg.alt = 'Logo Zakara';
+                    logoImg.className = 'w-9 h-9 sm:w-10 sm:h-10 rounded-lg border-2 border-black bg-white object-contain p-0.5 shrink-0 shadow-[2px_2px_0px_#000000]';
+                    iconBox.replaceWith(logoImg);
+                }
+            }
+        }
+    }
+}
+
 function getZakaraDB() {
     const raw = localStorage.getItem(ZAKARA_DB_KEY);
     if (!raw) {
@@ -77,7 +182,7 @@ function formatPct(part, total) {
     return ((part / total) * 100).toFixed(2).replace('.', ',') + '%';
 }
 
-// Bebaskan semua input nominal agar menerima angka acak berapapun (tanpa batasan kelipatan step)
+// Bebaskan semua input nominal agar menerima angka acak berapapun
 function unlockFlexibleNumericInputs() {
     ['modal-amount-input', 'input-harta', 'dist-amount-input'].forEach(id => {
         const el = document.getElementById(id);
@@ -92,8 +197,11 @@ function unlockFlexibleNumericInputs() {
 function toggleMobileNav() {
     const drawer = document.getElementById('mobile-nav-drawer');
     const icon = document.getElementById('mobile-menu-icon');
+    if (!drawer) return;
     drawer.classList.toggle('hidden');
-    icon.textContent = drawer.classList.contains('hidden') ? 'menu' : 'close';
+    if (icon) {
+        icon.textContent = drawer.classList.contains('hidden') ? 'menu' : 'close';
+    }
 }
 
 // 2. Kalkulator Zakat Maal Interaktif
@@ -133,7 +241,7 @@ function initZakatCalculator() {
                 statusNisab.className = "inline-flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm uppercase font-bold mt-1";
             }
             if (btnTunaikan) {
-                btnTunaikan.innerHTML = '<span>Salurkan</span><span class="material-symbols-outlined text-[18px] font-bold">arrow_forward</span>';
+                btnTunaikan.innerHTML = '<span>Salurkan Infaq / Wakaf</span><span class="material-symbols-outlined text-[18px] font-bold">arrow_forward</span>';
             }
         }
     }
@@ -326,7 +434,6 @@ function setupDonationModalField(isCampaignFixed, fixedCampaignName) {
     const akadSelect = document.getElementById('modal-akad-select');
     if (!progEl || !amtInput || !akadSelect) return;
 
-    // Izinkan angka nominal acak berapapun (tidak dipaksa kelipatan 10.000)
     amtInput.setAttribute('step', '1');
     amtInput.setAttribute('min', '1');
 
@@ -779,6 +886,7 @@ function showToast(message) {
 
 // Jalankan sinkronisasi otomatis saat halaman dimuat
 document.addEventListener('DOMContentLoaded', () => {
+    applyResponsiveFixesAndFaviconLogo();
     unlockFlexibleNumericInputs();
     initZakatCalculator();
     injectDistributionControls();
