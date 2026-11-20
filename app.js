@@ -3,6 +3,16 @@
 // Responsive Layout Fix + Sync Logo Navbar dengan Favicon + Nominal Bebas
 // =========================================================================
 
+// Anti-Cache Otomatis: Memaksa browser HP selalu mengambil versi terbaru
+(function enforceFreshVersion() {
+    const CURRENT_VER = '2026.11.21.v4'; // Naikkan angka ini (v5, v6, dst.) setiap kali update besar
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('v') !== CURRENT_VER) {
+        url.searchParams.set('v', CURRENT_VER);
+        window.location.replace(url.toString());
+    }
+})();
+
 const ZAKARA_DB_KEY = 'zakara_mini_db_v2';
 const NISAB_VALUE = 214030000;
 const MIN_ZAKAT_DUE = Math.round(NISAB_VALUE * 0.025); // Rp 5.350.750
