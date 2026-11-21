@@ -1,11 +1,11 @@
 // =========================================================================
 // MINI-DATABASE SIMULASI ZAKARA (LOCALSTORAGE ENGINE - PERSISTEN PER DEVICE)
-// Mobile Top-Bar & Banner Offset Fix (v8) + Logo Favicon + Nominal Bebas
+// Mobile Pop-up Modal Portal Fix (v9) + Top-Bar Fix + Logo Favicon + Nominal Bebas
 // =========================================================================
 
 // Anti-Cache Otomatis: Memaksa browser HP (Safari/Chrome) selalu mengambil versi terbaru
 (function enforceFreshVersion() {
-    const CURRENT_VER = '2026.11.21.v8';
+    const CURRENT_VER = '2026.11.21.v9';
     const url = new URL(window.location.href);
     if (url.searchParams.get('v') !== CURRENT_VER) {
         url.searchParams.set('v', CURRENT_VER);
@@ -56,7 +56,7 @@ let modalContext = {
 };
 
 // =========================================================================
-// 0. RESPONSIVE VIEWPORT FIX (ANTI-TENGGELAM DI HP & SAFARI iOS) + LOGO FAVICON
+// 0. RESPONSIVE VIEWPORT FIX + TRUE FLOATING POP-UP MODAL + LOGO FAVICON
 // =========================================================================
 function applyResponsiveFixesAndFaviconLogo() {
     if (!document.getElementById('zakara-responsive-style')) {
@@ -65,27 +65,48 @@ function applyResponsiveFixesAndFaviconLogo() {
         style.textContent = `
             html {
                 scroll-behavior: smooth;
-                overflow-x: clip;
             }
             body {
-                overflow-x: clip;
                 min-height: 100dvh;
+                max-width: 100vw;
             }
             img, svg, video, canvas {
                 max-width: 100%;
                 height: auto;
             }
+            /* Paksa Pop-up Modal Donasi & Penyaluran SELALU mengambang di tengah layar HP maupun Desktop */
+            #donation-modal:not(.hidden),
+            #distribute-modal:not(.hidden) {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                width: 100vw !important;
+                height: 100dvh !important;
+                z-index: 99999 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 1rem !important;
+                background-color: rgba(0, 0, 0, 0.65) !important;
+                backdrop-filter: blur(4px) !important;
+                -webkit-backdrop-filter: blur(4px) !important;
+                overflow-y: auto !important;
+            }
             #donation-modal > div,
             #distribute-modal > div {
-                max-height: 90dvh;
-                overflow-y: auto;
+                position: relative !important;
+                width: 100% !important;
+                max-width: 32rem !important;
+                max-height: 88dvh !important;
+                overflow-y: auto !important;
+                margin: auto !important;
             }
             table {
                 width: 100%;
             }
             @media (max-width: 768px) {
-                /* Ubah SEMUA pembungkus top-bar (baik header, nav, maupun div.fixed/sticky di atas)
-                   menjadi aliran normal agar tidak pernah menimpa konten atas di HP */
                 body > header,
                 body > nav,
                 body > div.fixed,
@@ -106,21 +127,21 @@ function applyResponsiveFixesAndFaviconLogo() {
                     width: 100% !important;
                     max-height: none !important;
                 }
-                /* Beri ruang napas lega di bagian atas konten utama semua halaman */
                 main,
                 body > section:first-of-type {
                     padding-top: 1.5rem !important;
                     margin-top: 0 !important;
                 }
-                /* Tambah ruang bawah agar tidak tertutup floating bar Safari iPhone */
                 footer,
                 body {
                     padding-bottom: 5rem !important;
                 }
                 #toast-notification {
+                    position: fixed !important;
                     left: 0.75rem !important;
                     right: 0.75rem !important;
                     bottom: 5rem !important;
+                    z-index: 100000 !important;
                     max-width: calc(100vw - 1.5rem) !important;
                 }
             }
@@ -128,8 +149,22 @@ function applyResponsiveFixesAndFaviconLogo() {
         document.head.appendChild(style);
     }
 
-    // Pastikan jika ada elemen fixed yang masih menempel di atas (top <= 10px),
-    // konten di bawahnya otomatis didorong sejauh tinggi total elemen tersebut
+    // Pindahkan #donation-modal langsung ke <body> agar tidak terjebak di dalam container bawah/footer
+    const donationModal = document.getElementById('donation-modal');
+    if (donationModal && donationModal.parentElement !== document.body) {
+        document.body.appendChild(donationModal);
+    }
+
+    // Tutup modal otomatis jika user mengetuk area gelap di luar kotak pop-up
+    if (donationModal && !donationModal.dataset.backdropBound) {
+        donationModal.dataset.backdropBound = 'true';
+        donationModal.addEventListener('click', (e) => {
+            if (e.target === donationModal) {
+                closeDonationModal();
+            }
+        });
+    }
+
     function adjustForAnyFixedTopBar() {
         const isMobile = window.innerWidth <= 768;
         let maxFixedBottom = 0;
@@ -279,7 +314,7 @@ function initZakatCalculator() {
                 statusNisab.className = "inline-flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm uppercase font-bold mt-1";
             }
             if (btnTunaikan) {
-                btnTunaikan.innerHTML = '<span>Salurkan Infaq / Wakaf</span><span class="material-symbols-outlined text-[18px] font-bold">arrow_forward</span>';
+                btnTunaikan.innerHTML = '<span>Salurkan</span><span class="material-symbols-outlined text-[18px] font-bold">arrow_forward</span>';
             }
         }
     }
@@ -573,11 +608,22 @@ function openDonationModal(programName, defaultAmount, defaultAkad, options = {}
         }
     }
 
-    modal.classList.remove('hidden');
+    if (modal) {
+        // Pastikan modal berada langsung di dalam <body> agar tidak pernah merosot di atas footer pada HP
+        if (modal.parentElement !== document.body) {
+            document.body.appendChild(modal);
+        }
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeDonationModal() {
-    document.getElementById('donation-modal').classList.add('hidden');
+    const modal = document.getElementById('donation-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+    document.body.style.overflow = '';
 }
 
 function submitDonationModal(e) {
@@ -669,7 +715,7 @@ function injectDistributionControls() {
         <div class="bg-surface-container-lowest border-2 border-black rounded-xl p-space-lg max-w-lg w-full shadow-[8px_8px_0px_#000000] relative">
             <div class="flex items-center justify-between pb-space-sm border-b-2 border-black mb-space-md">
                 <span class="font-label-md text-label-md uppercase tracking-wider text-black">Simulasi Penyaluran Kas ke Mustahik</span>
-                <button type="button" onclick="document.getElementById('distribute-modal').classList.add('hidden')" class="w-8 h-8 rounded-lg border-2 border-black bg-surface-container hover:bg-error-container flex items-center justify-center">
+                <button type="button" onclick="closeDistributeModal()" class="w-8 h-8 rounded-lg border-2 border-black bg-surface-container hover:bg-error-container flex items-center justify-center">
                     <span class="material-symbols-outlined text-[18px] font-bold">close</span>
                 </button>
             </div>
@@ -706,7 +752,18 @@ function injectDistributionControls() {
 
 function openDistributeModal() {
     const modal = document.getElementById('distribute-modal');
-    if (modal) modal.classList.remove('hidden');
+    if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeDistributeModal() {
+    const modal = document.getElementById('distribute-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+    document.body.style.overflow = '';
 }
 
 function submitDistributeModal(e) {
@@ -747,7 +804,7 @@ function submitDistributeModal(e) {
 
     saveZakaraDB(db);
     syncAllPagesWithDB();
-    document.getElementById('distribute-modal').classList.add('hidden');
+    closeDistributeModal();
     showToast(`Penyaluran ${formatIDR(amt)} ke "${tujuan}" berhasil dicatat! Sisa Kas berkurang & Tersalurkan bertambah.`);
 }
 
@@ -908,13 +965,13 @@ function copyTextSafe(text) {
     showToast('Nomor simulasi fiktif (' + text + ') berhasil disalin!');
 }
 
-// 9. Notifikasi Toast Neo-Brutalist (z-index 60 agar selalu di atas modal)
+// 9. Notifikasi Toast Neo-Brutalist
 function showToast(message) {
     const toast = document.getElementById('toast-notification');
     const textEl = document.getElementById('toast-text');
     if (!toast || !textEl) return;
     toast.classList.remove('z-50');
-    toast.classList.add('z-[60]');
+    toast.classList.add('z-[100000]');
     textEl.textContent = message;
     toast.classList.remove('hidden');
     setTimeout(() => {
