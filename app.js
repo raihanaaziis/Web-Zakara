@@ -279,7 +279,7 @@ function initZakatCalculator() {
                 statusNisab.className = "inline-flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm uppercase font-bold mt-1";
             }
             if (btnTunaikan) {
-                btnTunaikan.innerHTML = '<span>Salurkan </span><span class="material-symbols-outlined text-[18px] font-bold">arrow_forward</span>';
+                btnTunaikan.innerHTML = '<span>Salurkan Infaq/Wakaf</span><span class="material-symbols-outlined text-[18px] font-bold">arrow_forward</span>';
             }
         }
     }
